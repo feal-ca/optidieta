@@ -21,7 +21,7 @@ NUTRIENTS: list[Nutrient] = [
     N("grasa_g", "Grasa total", "g", (410,), (), "fat_100g"),
     N("grasa_sat_g", "Grasa saturada", "g", (299,), (), "saturated-fat_100g"),
     N("hidratos_g", "Hidratos de carbono", "g", (53,), (), "carbohydrates_100g"),
-    N("azucares_g", "Azúcares", "g", (), (), "sugars_100g"),
+    N("azucares_g", "Azúcares", "g", (446,), ("azucares, totales",), "sugars_100g"),
     N("fibra_g", "Fibra", "g", (307,), (), "fiber_100g"),
     N("sodio_mg", "Sodio", "mg", (323,), (), "sodium_100g", 1000),
     N("potasio_mg", "Potasio", "mg", (321,)),

@@ -95,8 +95,14 @@ def labels_for(prods, off_dir: Path) -> dict[str, dict[str, float]]:
     return out
 
 
+def reparse_bedca(p) -> None:
+    foods = [bedca.parse_food(f.read_text(encoding="utf-8")) for f in sorted(p["bedca"].glob("f_*.xml"))]
+    bedca.foods_frame([f for f in foods if f is not None]).to_parquet(p["bedca_frame"])
+
+
 def cmd_build(args) -> None:
     p = paths()
+    reparse_bedca(p)
     prods = load_products(p)
     cat, rep = build_catalog(prods, pd.read_parquet(p["bedca_frame"]), read_mapping(p["mapping"]),
                              labels_for(prods, p["off"]))

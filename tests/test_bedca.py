@@ -74,3 +74,10 @@ def test_fetch_writes_cache(tmp_path):
 def test_empty_food_returns_none():
     xml = '<?xml version="1.0" encoding="utf-8"?><foodresponse><food/><componentList></componentList></foodresponse>'
     assert parse_food(xml) is None
+
+
+def test_sugars_mapped_by_name():
+    xml = ('<?xml version="1.0" encoding="utf-8"?><foodresponse><food><f_id>7</f_id><f_ori_name>X</f_ori_name>'
+           '<foodvalue><c_id>4321</c_id><c_ori_name>azucares, totales</c_ori_name><best_location>12.5</best_location>'
+           '<v_unit>g</v_unit></foodvalue></food></foodresponse>')
+    assert parse_food(xml).valores["azucares_g"] == 12.5

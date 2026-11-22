@@ -13,6 +13,6 @@ def test_registry_unique_and_columns():
 
 def test_off_fields():
     assert BY_KEY["azucares_g"].off_field == "sugars_100g"
-    assert BY_KEY["azucares_g"].bedca_ids == ()
+    assert BY_KEY["azucares_g"].bedca_ids == (446,)
     assert BY_KEY["sodio_mg"].off_factor == 1000
     assert BY_KEY["hierro_mg"].off_field is None
