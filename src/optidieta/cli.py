@@ -72,7 +72,7 @@ def cmd_fetch(args) -> None:
     print("Open Food Facts…", flush=True)
     tick = _progress("etiquetas")
     for x in prods:
-        off.fetch_label(x.ean, p["off"], session=s, delay=args.delay * 0.7)
+        off.fetch_label(x.ean, p["off"], session=s, delay=args.delay * 1.5)
         tick()
     print("Hecho.")
 

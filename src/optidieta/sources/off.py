@@ -14,7 +14,7 @@ HEADERS = {"User-Agent": "optidieta/0.1"}
 FIELDS = "product_name,nutriments"
 
 
-def fetch_label(ean: str, cache_dir: Path, session=None, delay: float = 1.0) -> dict | None:
+def fetch_label(ean: str, cache_dir: Path, session=None, delay: float = 1.0, retries: int = 6) -> dict | None:
     if not ean:
         return None
     cache = Path(cache_dir)
@@ -23,7 +23,21 @@ def fetch_label(ean: str, cache_dir: Path, session=None, delay: float = 1.0) -> 
     if f.exists():
         return json.loads(f.read_text(encoding="utf-8"))
     s = session or requests.Session()
-    r = s.get(URL.format(ean), params={"fields": FIELDS}, headers=HEADERS, timeout=30)
+    for attempt in range(retries + 1):
+        wait = min(60.0, 2 * delay * 2 ** attempt)
+        try:
+            r = s.get(URL.format(ean), params={"fields": FIELDS}, headers=HEADERS, timeout=30)
+        except (requests.Timeout, requests.ConnectionError):
+            if attempt == retries:
+                raise
+            time.sleep(wait)
+            continue
+        if r.status_code == 429 or r.status_code >= 500:
+            if attempt == retries:
+                r.raise_for_status()
+            time.sleep(wait)
+            continue
+        break
     if r.status_code not in (200, 404):
         r.raise_for_status()
     try:

@@ -18,7 +18,9 @@ class FakeResp:
         self.status_code = status
 
     def raise_for_status(self):
-        pass
+        if self.status_code >= 400:
+            import requests
+            raise requests.HTTPError(str(self.status_code))
 
     def json(self):
         return self.data
@@ -58,3 +60,25 @@ def test_not_found_is_cached(tmp_path):
     assert fetch_label("123", tmp_path, session=s, delay=0) == {"status": 0, "status_verbose": "product not found"}
     fetch_label("123", tmp_path, session=s, delay=0)
     assert s.calls == 1
+
+
+class Flaky:
+    """Primero 429, luego timeout, luego bien."""
+
+    def __init__(self):
+        self.calls = 0
+
+    def get(self, *a, **k):
+        self.calls += 1
+        if self.calls == 1:
+            return FakeResp({}, status=429)
+        if self.calls == 2:
+            import requests
+            raise requests.ReadTimeout("lento")
+        return FakeResp(load("off_found.json"))
+
+
+def test_rate_limit_and_timeout_retried(tmp_path):
+    s = Flaky()
+    assert parse_label(fetch_label("8480000000001", tmp_path, session=s, delay=0))["azucares_g"] == 3.5
+    assert s.calls == 3
