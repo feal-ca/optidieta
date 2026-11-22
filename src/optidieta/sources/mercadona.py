@@ -76,7 +76,13 @@ def _get_cached(session, cache: Path, name: str, path: str, delay: float, retrie
     if f.exists():
         return json.loads(f.read_text(encoding="utf-8"))
     for attempt in range(retries + 1):
-        r = session.get(f"{BASE}/{path}/", params=PARAMS, headers=HEADERS, timeout=30)
+        try:
+            r = session.get(f"{BASE}/{path}/", params=PARAMS, headers=HEADERS, timeout=30)
+        except (requests.Timeout, requests.ConnectionError):
+            if attempt == retries:
+                raise
+            time.sleep(delay * 2 ** (attempt + 1))
+            continue
         code = getattr(r, "status_code", 200)
         if code == 429 or code >= 500:
             if attempt == retries:

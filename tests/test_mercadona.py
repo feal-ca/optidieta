@@ -45,7 +45,7 @@ class FakeSession:
             return FakeResp({"id": cid, "name": "otra", "categories": []})
         if path.startswith("products/"):
             self.detail_calls += 1
-            if self.fail_on and self.detail_calls == self.fail_on:
+            if self.fail_on and self.detail_calls >= self.fail_on:  # red caída a partir de aquí
                 raise requests.ConnectionError("red caída")
             pid = path.split("/")[1]
             return FakeResp(dict(PROD, id=pid))
@@ -134,4 +134,23 @@ def test_transient_errors_retried(tmp_path):
     first = CAT120["categories"][0]["products"][1]["id"]
     s = StatusSession(first, [503, 429])
     prods = fetch_all(tmp_path, include={120}, session=s, delay=0)
+    assert len(prods) == N_PRODUCTS
+
+
+class TimeoutOnce(FakeSession):
+    def __init__(self):
+        super().__init__()
+        self.raised = False
+
+    def get(self, url, **k):
+        if "products/" in url and not self.raised:
+            self.raised = True
+            raise requests.ReadTimeout("lento")
+        r = super().get(url, **k)
+        r.status_code = 200
+        return r
+
+
+def test_timeouts_retried(tmp_path):
+    prods = fetch_all(tmp_path, include={120}, session=TimeoutOnce(), delay=0)
     assert len(prods) == N_PRODUCTS
