@@ -10,7 +10,7 @@ from optidieta.nutrients import BY_KEY, NUTRIENTS, col
 from optidieta.optimizer import compare, solve
 from optidieta.state import UserState, apply_edits, load_state, save_state
 from optidieta.targets import Profile, default_constraints
-from optidieta.ui import reset_editors
+from optidieta.ui import editor_key, reset_editors
 
 st.set_page_config(page_title="Optidieta", page_icon="🥕", layout="wide")
 P = paths()
@@ -130,7 +130,7 @@ with t_dieta:
                 column_config={"id": None, "Mercadona": st.column_config.LinkColumn(display_text="ver"),
                                "€/día": st.column_config.NumberColumn(format="%.2f €"),
                                "Vetar": st.column_config.CheckboxColumn(help="Quitar este producto de la dieta")},
-                key="portions")
+                key=editor_key("portions", por.id))
             vet = ed.loc[ed.Vetar, "id"].tolist()
             if vet:
                 S.excluded |= set(vet)
