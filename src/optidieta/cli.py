@@ -70,11 +70,23 @@ def cmd_fetch(args) -> None:
     print(f"  {len(foods)} alimentos")
 
     print("Open Food Facts…", flush=True)
-    tick = _progress("etiquetas")
-    for x in prods:
-        off.fetch_label(x.ean, p["off"], session=s, delay=args.delay * 1.5)
-        tick()
+    fetch_labels(prods, p["off"], s, args.delay * 1.5)
     print("Hecho.")
+
+
+def fetch_labels(prods, off_dir, session, delay) -> int:
+    """Descarga etiquetas; si OFF limita o falla, para y avisa (lo bajado queda en caché)."""
+    tick, n = _progress("etiquetas"), 0
+    for x in prods:
+        try:
+            off.fetch_label(x.ean, off_dir, session=session, delay=delay)
+        except requests.RequestException as e:
+            print(f"Open Food Facts no responde ({e}). Lo descargado queda en caché: "
+                  "vuelve a ejecutar `optidieta fetch` más tarde para completar las etiquetas.")
+            break
+        n += 1
+        tick()
+    return n
 
 
 def cmd_propose(args) -> None:
