@@ -68,13 +68,27 @@ def parse_product(listing: dict, detail: dict, categoria: str, subcategoria: str
     )
 
 
-def _get_cached(session, cache: Path, name: str, path: str, delay: float) -> dict:
+MISSING = {"_no_disponible": True}
+
+
+def _get_cached(session, cache: Path, name: str, path: str, delay: float, retries: int = 4) -> dict:
     f = cache / f"{name}.json"
     if f.exists():
         return json.loads(f.read_text(encoding="utf-8"))
-    r = session.get(f"{BASE}/{path}/", params=PARAMS, headers=HEADERS, timeout=30)
-    r.raise_for_status()
-    data = r.json()
+    for attempt in range(retries + 1):
+        r = session.get(f"{BASE}/{path}/", params=PARAMS, headers=HEADERS, timeout=30)
+        code = getattr(r, "status_code", 200)
+        if code == 429 or code >= 500:
+            if attempt == retries:
+                r.raise_for_status()
+            time.sleep(delay * 2 ** (attempt + 1))
+            continue
+        break
+    if code == 404 and name.startswith("product_"):
+        data = MISSING
+    else:
+        r.raise_for_status()
+        data = r.json()
     tmp = f.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     tmp.replace(f)
@@ -105,6 +119,8 @@ def fetch_all(cache_dir: Path, include: set[int], session=None, delay: float = 1
             for leaf in data.get("categories", []):
                 for listing in leaf.get("products", []):
                     detail = _get_cached(session, cache, f"product_{listing['id']}", f"products/{listing['id']}", delay)
+                    if detail.get("_no_disponible"):
+                        continue
                     p = parse_product(listing, detail, top["name"], sub["name"], sub["id"])
                     # el precio vigente es el del listado (se refresca); el detalle puede ser antiguo
                     lp = listing.get("price_instructions") or {}

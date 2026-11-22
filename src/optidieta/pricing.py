@@ -8,6 +8,8 @@ def price_per_100g(p: MercaProduct, porcion_comestible: float | None, g_por_unid
     fmt = (p.formato_ref or "").strip().lower()
     if fmt == "kg" and p.precio_ref:
         bruto = p.precio_ref / 10
+    elif fmt in ("100 g", "100g", "100 ml", "100ml") and p.precio_ref:
+        bruto = p.precio_ref
     elif fmt == "l" and p.precio_ref:
         d = densidad or (0.92 if "aceite" in norm(p.nombre) else 1.0)
         bruto = p.precio_ref / 10 / d

@@ -67,3 +67,12 @@ def test_roundtrip_csv(tmp_path):
     assert back.iloc[0].g_por_unidad == 720.0
     assert pd.isna(back.iloc[1].bedca_id)
     assert back.iloc[1].vegano == ""
+
+
+def test_propose_eggs_default_unit_weight():
+    df = propose([product(id="12", nombre="Huevos frescos L 12 ud", formato_ref="ud"),
+                  product(id="13", nombre="Huevos camperos M", formato_ref="docena"),
+                  product(id="14", nombre="Lentejas", formato_ref="kg")], bedca())
+    g = dict(zip(df.mercadona_id, df.g_por_unidad))
+    assert g["12"] == 720 and g["13"] == 720
+    assert pd.isna(g["14"])

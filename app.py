@@ -10,6 +10,7 @@ from optidieta.nutrients import BY_KEY, NUTRIENTS, col
 from optidieta.optimizer import compare, solve
 from optidieta.state import UserState, apply_edits, load_state, save_state
 from optidieta.targets import Profile, default_constraints
+from optidieta.ui import reset_editors
 
 st.set_page_config(page_title="Optidieta", page_icon="🥕", layout="wide")
 P = paths()
@@ -49,7 +50,8 @@ S: UserState = st.session_state.state
 
 
 def save_and_rerun():
-    save_state(S, P["data"] / "estado.json")
+    save_state(st.session_state.state, P["data"] / "estado.json")
+    reset_editors(st.session_state)  # si no, Streamlit reaplica la última edición sobre las filas nuevas
     st.rerun()
 
 

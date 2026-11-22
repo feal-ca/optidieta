@@ -111,3 +111,12 @@ def test_compare():
     d = compare(a, b)
     assert d.added == ["B"] and d.removed == ["A"]
     assert d.cost_delta == pytest.approx(0.75 - 0.30)
+
+
+def test_blocking_scales_pct_rows_by_energy():
+    # la grasa se queda a un 0,2 % E del mínimo; la B12 falta entera: la B12 es la causa principal
+    df = pd.DataFrame([food("A", 0.10, energia_kcal=100.0, grasa_g=2.2, vit_b12_ug=0.0)])
+    s = solve(df, [C("energia_kcal", 2000, 2100), C("grasa_g", 0.20, kind="pct_energia", kcal_por_g=9),
+                   C("vit_b12_ug", 4)], max_g=3000)
+    assert not s.feasible
+    assert s.blocking[0] == "vit_b12_ug"

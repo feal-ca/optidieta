@@ -80,3 +80,9 @@ def test_sugar_unknown_without_label():
     cat, _ = build([product(id="1")], [mrow("1")])
     assert not cat.k_azucares_g[0]
     assert math.isnan(cat.n_azucares_g[0])
+
+
+def test_duplicate_mapping_rows_deduped():
+    cat, rep = build([product(id="1")], [mrow("1"), mrow("1")])
+    assert list(cat.id) == ["1"]
+    assert rep.duplicados == ["1"]

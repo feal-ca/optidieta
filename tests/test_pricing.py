@@ -33,3 +33,7 @@ def test_price_unit_with_weight():
 
 def test_zero_edible_portion_treated_as_one():
     assert price_per_100g(product(precio_ref=1.0), 0, None, None) == pytest.approx(0.1)
+
+
+def test_price_per_100g_format():
+    assert price_per_100g(product(precio_ref=0.45, formato_ref="100 g"), 1.0, None, None) == pytest.approx(0.45)

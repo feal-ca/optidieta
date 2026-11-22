@@ -16,6 +16,7 @@ N_PRODUCTS = sum(len(s["products"]) for s in CAT120["categories"])
 class FakeResp:
     def __init__(self, data):
         self.data = data
+        self.status_code = 200
 
     def raise_for_status(self):
         pass
@@ -94,3 +95,43 @@ def test_load_included(tmp_path):
     f = tmp_path / "s.toml"
     f.write_text("include = [120, 121] # pasta, legumbres\n", encoding="utf-8")
     assert load_included(f) == {120, 121}
+
+
+class StatusSession(FakeSession):
+    """El detalle del producto `bad` responde con los códigos de `codes` (y luego 200)."""
+
+    def __init__(self, bad, codes):
+        super().__init__()
+        self.bad, self.codes = bad, list(codes)
+
+    def get(self, url, **k):
+        if f"products/{self.bad}/" in url and self.codes:
+            self.urls.append(url)
+            code = self.codes.pop(0)
+            r = FakeResp({"detail": "x"})
+            r.status_code = code
+
+            def rfs():
+                raise requests.HTTPError(str(code), response=r)
+            r.raise_for_status = rfs
+            return r
+        r = super().get(url, **k)
+        r.status_code = 200
+        return r
+
+
+def test_delisted_product_skipped_and_remembered(tmp_path):
+    first = CAT120["categories"][0]["products"][1]["id"]
+    s = StatusSession(first, [404])
+    prods = fetch_all(tmp_path, include={120}, session=s, delay=0)
+    assert len(prods) == N_PRODUCTS - 1
+    again = FakeSession()
+    fetch_all(tmp_path, include={120}, session=again, delay=0)
+    assert again.urls == []
+
+
+def test_transient_errors_retried(tmp_path):
+    first = CAT120["categories"][0]["products"][1]["id"]
+    s = StatusSession(first, [503, 429])
+    prods = fetch_all(tmp_path, include={120}, session=s, delay=0)
+    assert len(prods) == N_PRODUCTS

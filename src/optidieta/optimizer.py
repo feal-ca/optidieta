@@ -58,6 +58,8 @@ def _rows(df: pd.DataFrame, constraints: list[Constraint]):
     """Filas A_ub·x ≤ b_ub (x en gramos), con la clave y el límite de cada una."""
     per_g = {n.key: df[col(n.key)].fillna(0).to_numpy(float) / 100 for n in NUTRIENTS if col(n.key) in df}
     A, b, keys, lims = [], [], [], []
+    e_target = next((c.min or c.max for c in constraints if c.key == "energia_kcal" and c.active
+                     and (c.min or c.max)), 2000.0)
     for c in constraints:
         if not c.active or c.key not in per_g:
             continue
@@ -67,9 +69,9 @@ def _rows(df: pd.DataFrame, constraints: list[Constraint]):
                 continue
             fac, e = (c.kcal_por_g or 0), per_g["energia_kcal"]
             if c.min is not None:  # fac·n ≥ min·E  →  min·E − fac·n ≤ 0
-                A.append(c.min * e - fac * a); b.append(0.0); keys.append(c.key); lims.append(1.0)
+                A.append(c.min * e - fac * a); b.append(0.0); keys.append(c.key); lims.append(max(c.min * e_target, 1.0))
             if c.max is not None:
-                A.append(fac * a - c.max * e); b.append(0.0); keys.append(c.key); lims.append(1.0)
+                A.append(fac * a - c.max * e); b.append(0.0); keys.append(c.key); lims.append(max(c.max * e_target, 1.0))
         else:
             if c.min is not None:
                 A.append(-a); b.append(-c.min); keys.append(c.key); lims.append(max(abs(c.min), 1.0))

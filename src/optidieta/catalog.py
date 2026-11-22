@@ -22,6 +22,7 @@ class BuildReport:
     con_etiqueta: int = 0
     etiqueta_descartada: list[str] = field(default_factory=list)
     sin_bedca: list[str] = field(default_factory=list)
+    duplicados: list[str] = field(default_factory=list)
 
     def texto(self) -> str:
         return (f"Incluidos: {self.incluidos}\nSin revisar (fuera): {self.sin_revisar}\n"
@@ -29,7 +30,8 @@ class BuildReport:
                 f"Etiqueta descartada (kcal incoherentes): {len(self.etiqueta_descartada)} {self.etiqueta_descartada[:20]}\n"
                 f"Desaparecidos de Mercadona: {len(self.desaparecidos)} {self.desaparecidos[:20]}\n"
                 f"Sin precio calculable: {len(self.sin_precio)} {self.sin_precio[:20]}\n"
-                f"Sin alimento BEDCA válido: {len(self.sin_bedca)} {self.sin_bedca[:20]}")
+                f"Sin alimento BEDCA válido: {len(self.sin_bedca)} {self.sin_bedca[:20]}\n"
+                f"Filas duplicadas en mapping.csv (se usa la primera): {self.duplicados}")
 
 
 def _flag(v, default: bool) -> bool:
@@ -47,8 +49,13 @@ def build_catalog(products: list[MercaProduct], bedca: pd.DataFrame, mapping: pd
     by_id = {str(p.id): p for p in products}
     bedca_by_id = bedca.set_index("bedca_id")
     rows = []
+    seen: set[str] = set()
     for _, m in mapping.iterrows():
         mid = str(m["mercadona_id"])
+        if mid in seen:
+            rep.duplicados.append(mid)
+            continue
+        seen.add(mid)
         if str(m.get("excluir", "")).strip().lower() in ("sí", "si"):
             continue
         if str(m.get("revisado", "")).strip().lower() not in ("sí", "si"):

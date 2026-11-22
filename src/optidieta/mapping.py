@@ -16,6 +16,23 @@ MARCAS = ["hacendado", "deliplus", "bosque verde", "compy", "mercadona"]
 COCINADO = ("hervid", "cocid", "frit", "asad", "guisad", "en conserva", "en almibar")
 CRUDO = ("crud", "sec", "fresc")
 
+HUEVO_G = 60
+
+
+def default_unit_grams(p: MercaProduct) -> float | None:
+    """Peso por unidad de venta para productos por unidades conocidos (huevos: 60 g/huevo)."""
+    if (p.formato_ref or "").lower() in ("kg", "l", "100 g", "100 ml"):
+        return None
+    name = norm(p.nombre)
+    if "huevo" not in name:
+        return None
+    m = re.search(r"\b(\d+)\s*(ud|uds|unidades|huevos)\b", name)
+    n = int(m.group(1)) if m else (12 if "docena" in name or (p.formato_ref or "").lower() == "docena" else None)
+    if n is None and "media docena" in name:
+        n = 6
+    return n * HUEVO_G if n else None
+
+
 _PESO = re.compile(r"\b\d+([.,]\d+)?\s*(kg|g|gr|l|ml|cl|ud|uds|unidades)\b|\bpack\s*\d+\b|\b\d+\s*x\s*\d+\b")
 
 
@@ -57,7 +74,7 @@ def propose(products: list[MercaProduct], bedca: pd.DataFrame) -> pd.DataFrame:
             "mercadona_id": str(p.id), "nombre": p.nombre, "bedca_id": int(b["bedca_id"]),
             "bedca_nombre": b["bedca_nombre"], "confianza": int(round(float(sc[j]))), "revisado": "no",
             "excluir": "no", "porcion_comestible": float(pc) if pd.notna(pc) and pc else 1.0,
-            "g_por_unidad": None, "vegetariano": "", "vegano": "",
+            "g_por_unidad": default_unit_grams(p), "vegetariano": "", "vegano": "",
         })
     return pd.DataFrame(rows, columns=COLUMNS)
 
