@@ -38,3 +38,10 @@ def test_traces_do_not_count():
 def test_egg_pasta_not_vegan():
     p = product(nombre="Macarrón al huevo", ingredientes="Sémola de trigo duro, huevo (20%).")
     assert diet_flags(p) == (True, False)
+
+
+def test_free_from_statements_do_not_count():
+    p = product(nombre="Arroz Nomen", ingredientes="Arroz semilargo",
+                alergenos="Libre de moluscos y productos a base de moluscos. Libre de huevos y productos a base de huevo. "
+                          "Libre de pescado y productos a base de pescado. Libre de leche y sus derivados (incluida la lactosa).")
+    assert diet_flags(p) == (True, True)

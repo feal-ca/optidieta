@@ -86,3 +86,17 @@ def test_duplicate_mapping_rows_deduped():
     cat, rep = build([product(id="1")], [mrow("1"), mrow("1")])
     assert list(cat.id) == ["1"]
     assert rep.duplicados == ["1"]
+
+
+def test_label_far_from_bedca_ignored():
+    # etiqueta coherente consigo misma pero de otro producto (612 kcal frente a 300 → no; 1000 frente a 300 → sí)
+    labels = {"1": {"energia_kcal": 1000.0, "proteina_g": 20.0, "hidratos_g": 14.0, "grasa_g": 100.0}}
+    cat, rep = build([product(id="1")], [mrow("1")], labels)
+    assert cat.fuente_etiqueta[0] == "bedca"
+    assert rep.etiqueta_descartada == ["1"]
+
+
+def test_light_label_kept():
+    labels = {"1": {"energia_kcal": 110.0, "proteina_g": 12.0, "hidratos_g": 14.0, "grasa_g": 0.5}}
+    cat, _ = build([product(id="1")], [mrow("1")], labels)
+    assert cat.fuente_etiqueta[0] == "off"

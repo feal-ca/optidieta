@@ -97,7 +97,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 3840;Guacamole Hacendado;1623;Aguacate;71;sí;sí;0.6;;;
 3852;Guacamole Hacendado;1623;Aguacate;71;sí;sí;0.6;;;
 3858;Aguacates;1623;Aguacate;100;sí;no;0.7;;;
-3897;Lima;196;Lima, cruda;100;sí;no;0.7;;;
+3897;Lima;1001;Lima, cruda;100;sí;no;0.7;;;
 3914;Kaki;2213;Caqui;100;sí;no;0.85;;;
 3915;Granada;2226;Granada;100;sí;no;0.55;;;
 3928;Kakis;2213;Caqui;100;sí;no;0.85;;;
@@ -146,10 +146,10 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 5063;Arroz largo Hacendado;1630;Arroz;100;sí;no;1.0;;;
 5124;Alubia blanca Hacendado;1906;Judía blanca;100;sí;no;1.0;;;
 5184;Arroz integral largo Hacendado;56;Arroz integral, crudo;100;sí;no;1.0;;;
-5202;Garbanzo pedrosillano Hacendado;160;Garbanzo, seco, crudo;100;sí;no;1.0;;;
-5214;Garbanzo Hacendado;160;Garbanzo, seco, crudo;100;sí;no;1.0;;;
-5220;Garbanzo lechoso Andaluz Hacendado;160;Garbanzo, seco, crudo;100;sí;no;1.0;;;
-5330;Lenteja pardina Hacendado;189;Lenteja, seca, cruda;100;sí;no;1.0;;;
+5202;Garbanzo pedrosillano Hacendado;1020;Garbanzo, seco, crudo;100;sí;no;1.0;;;
+5214;Garbanzo Hacendado;1020;Garbanzo, seco, crudo;100;sí;no;1.0;;;
+5220;Garbanzo lechoso Andaluz Hacendado;1020;Garbanzo, seco, crudo;100;sí;no;1.0;;;
+5330;Lenteja pardina Hacendado;1065;Lenteja, seca, cruda;100;sí;no;1.0;;;
 5500;Frambuesas;914;Frambuesa, cruda;100;sí;no;1.0;;;
 5501;Arándanos;2011;Arandano;100;sí;no;1.0;;;
 5504;Mandarina;2229;Mandarina;100;sí;no;0.75;;;
@@ -258,18 +258,18 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 10054;Batido sabor fresa Hacendado;1671;Fresa;100;sí;sí;0.95;;;
 10055;Batido de chocolate 90% leche Hacendado;1636;Batido de chocolate;100;sí;sí;1.0;;;
 10066;Batido de chocolate ColaCao Energy;1636;Batido de chocolate;100;sí;sí;1.0;;;
-10117;Nata fresca para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;no;no;1.0;;;
+10117;Nata fresca para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;sí;sí;1.0;;;
 10146;Bebida láctea Omega 3 Puleva con leche desnatada;2001;Leche, vaca, omega 3;94;sí;sí;1.0;;;
 10150;Leche entera Llet Nostra;1694;Leche de vaca, entera;100;sí;no;1.0;;;
 10154;Leche semidesnatada Llet Nostra;916;Leche, semidesnatada, pasteurizada;100;sí;no;1.0;;;
 10155;Leche desnatada Llet Nostra;915;Leche, desnatada, pasteurizada;100;sí;no;1.0;;;
-10161;Nata ligera para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;no;no;1.0;;;
-10199;Nata ligera para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;no;no;1.0;;;
-10275;Nata para montar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;92;no;no;1.0;;;
-10276;Nata para montar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;92;no;no;1.0;;;
+10161;Nata ligera para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;sí;sí;1.0;;;
+10199;Nata ligera para cocinar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;95;sí;sí;1.0;;;
+10275;Nata para montar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;92;sí;sí;1.0;;;
+10276;Nata para montar Hacendado;440;Nata, líquida, para cocinar, 18% de grasa;92;sí;sí;1.0;;;
 10281;Bebida láctea Omega 3 Puleva con nueces y leche desnatada;2001;Leche, vaca, omega 3;94;sí;sí;1.0;;;
 10282;Bebida láctea Omega 3 Puleva con nueces y leche desnatada;2001;Leche, vaca, omega 3;94;sí;sí;1.0;;;
-10320;Nata ligera para cocinar sin lactosa Hacendado;2057;Lactosa;100;no;no;1.0;;;
+10320;Nata ligera para cocinar sin lactosa Hacendado;2057;Lactosa;100;sí;sí;1.0;;;
 10376;Crema de soja Hacendado;293;Soja, seca, cruda;91;sí;sí;1.0;;;
 10379;Leche entera Hacendado;1694;Leche de vaca, entera;100;sí;no;1.0;;;
 10380;Leche entera Hacendado;1694;Leche de vaca, entera;100;sí;no;1.0;;;
@@ -370,7 +370,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 13568;Cebolla troceada Hacendado ultracongelada;2381;Cebolla;100;sí;no;0.9;;;
 13577;Fideo cabello de ángel Hacendado;1117;Pasta alimenticia, cruda;100;sí;no;1.0;;;
 13597;Maíz frito gigante Hacendado;1704;Maíz frito;100;sí;sí;1.0;;;
-13598;Nata montada azucarada Hacendado;1997;Nata montada;100;no;no;1.0;;;
+13598;Nata montada azucarada Hacendado;1997;Nata montada;100;sí;sí;1.0;;;
 13609;Vinagre de Jerez reserva Hacendado;1764;Vinagre de vino;80;sí;sí;1.0;;;
 13628;Filetes de caballa del sur en aceite de oliva Hacendado;805;Caballa, enlatada en aceite, escurrida;100;sí;no;1.0;;;
 13632;Filetes de caballa del sur en tomate Hacendado;805;Caballa, enlatada en aceite, escurrida;100;sí;no;1.0;;;
@@ -384,7 +384,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 13865;Alcachofa troceada Hacendado ultracongelada;1176;Alcachofa, cruda;100;sí;no;0.45;;;
 13877;Orejones albaricoque Hacendado;1624;Albaricoque;100;sí;sí;0.82;;;
 13917;Postre de soja sabor lima limón Alpro;196;Lima, cruda;87;sí;sí;0.74;;;
-13926;Soja texturizada Luengo;293;Soja, seca, cruda;100;sí;no;1.0;;;
+13926;Soja texturizada Luengo;1129;Soja, seca, cruda;100;sí;no;1.0;;;
 13951;Yogur sabores Hacendado 0% MG 0% azúcares añadidos;369;Yogur, desnatado, sabor natural;91;sí;sí;1.0;;;
 13986;Espinacas en porciones Hacendado ultracongeladas;1282;Espinaca, congelada, cruda;100;sí;no;1.0;;;
 14031;Filetes pechuga de pavo marinados extra tiernos;1371;Pavo, pechuga, con piel, crudo;88;sí;sí;1.0;;;
@@ -450,9 +450,9 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 16436;Panceta de cerdo pieza;1924;Cerdo, panceta, cruda;100;sí;no;1.0;;;
 16463;Bolsita puré manzana, mango, frambuesa, plátano y papaya Hacendado +6 meses;153;Frambuesa, cruda;92;sí;sí;1.0;;;
 16486;Vinagre de manzana Hacendado sin filtrar;1707;Manzana;100;sí;sí;0.84;;;
-16503;Yemas de espárragos Hacendado;151;Espárrago, verde;100;sí;no;1.0;;;
-16519;Espárragos blancos medianos Hacendado;151;Espárrago, verde;100;sí;no;1.0;;;
-16561;Espárragos blancos muy gruesos Hacendado enteros;151;Espárrago, verde;100;sí;no;1.0;;;
+16503;Yemas de espárragos Hacendado;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
+16519;Espárragos blancos medianos Hacendado;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
+16561;Espárragos blancos muy gruesos Hacendado enteros;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
 16562;Fingers de merluza Hacendado ultracongelados;561;Merluza, congelada, cruda;87;sí;sí;1.0;;;
 16616;Champiñón laminado Hacendado;1656;Champiñon;100;sí;no;1.0;;;
 16618;Champiñones laminados Hacendado;1656;Champiñon;100;sí;no;1.0;;;
@@ -494,7 +494,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 17665;Pan de burger Hacendado Rústico;1974;Pan, tipo hamburguesa;89;sí;sí;1.0;;;
 17666;Cocktail frutos secos Twist Up Hacendado sabor lima y pimienta;2061;Frutos secos;100;sí;sí;1.0;;;
 17667;Pan de molde 15% maíz Hacendado;2160;Pan blanco, de barra;100;sí;no;1.0;;;
-17668;Almendra tostada Hacendado 0% sal añadida pelada;44;Almendra, cruda;100;sí;no;1.0;;;
+17668;Almendra tostada Hacendado 0% sal añadida pelada;896;Almendra, cruda;100;sí;no;1.0;;;
 17676;Barritas de galleta y frutos rojos Hacendado;519;Galleta, barquillo, con jalea de frutas;90;sí;sí;1.0;;;
 17813;11 Panecillos integrales 100%;2163;Pan integral;100;sí;no;1.0;;;
 17818;Preparado de verdura Tradicional cortado y lavado;2409;Pimiento rojo, crudo;100;sí;no;1.0;;;
@@ -534,7 +534,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 18509;Berberecho al natural XS Hacendado;1626;Almeja;100;sí;no;1.0;;;
 18552;Almejones al natural Hacendado;1626;Almeja;100;sí;no;1.0;;;
 18553;Berberechos al natural S Hacendado;1626;Almeja;100;sí;no;1.0;;;
-18562;Espárragos blancos medianos Hacendado;151;Espárrago, verde;100;sí;no;1.0;;;
+18562;Espárragos blancos medianos Hacendado;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
 18564;Berberechos al natural M Hacendado;1626;Almeja;100;sí;no;1.0;;;
 18579;Almejas blancas del norte al natural Hacendado;1626;Almeja;100;sí;no;1.0;;;
 18602;Mejillones en escabeche Hacendado medianos;1710;Mejillon;100;sí;sí;0.25;;;
@@ -612,7 +612,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 21326;Pasta rigatoni Armando;1117;Pasta alimenticia, cruda;100;sí;no;1.0;;;
 21362;Yogur sabor limón Hacendado 0% MG 0% azúcares añadidos;411;Limón, zumo, fresco;84;sí;sí;1.0;;;
 21369;Postre de soja sabor mango Alpro sin azúcares añadidos;426;Mango, crudo;89;sí;sí;1.0;;;
-21395;Pasta fusilli 100% lentejas rojas Hacendado;189;Lenteja, seca, cruda;100;sí;no;1.0;;;
+21395;Pasta fusilli 100% lentejas rojas Hacendado;1065;Lenteja, seca, cruda;100;sí;no;1.0;;;
 21448;Piadina Hacendado;1732;Piña;73;sí;sí;0.57;;;
 21450;Cereales cubiertos de chocolate blanco rellenos con leche Hacendado;1914;Chocolate blanco;100;sí;sí;1.0;;;
 21537;Salteado rústico Hacendado ultracongelado;388;Brocoli, crudo;100;sí;no;1.0;;;
@@ -650,7 +650,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 22780;Crema de queso viejo tostado mezcla Hacendado;1726;Pan tostado;78;sí;sí;1.0;;;
 22799;Postre lácteo sabor fresa sin lactosa Hacendado;1671;Fresa;100;sí;sí;0.95;;;
 22899;Pan Brioche Hacendado;1974;Pan, tipo hamburguesa;85;sí;sí;1.0;;;
-22966;Cereales copos de maíz Corn Flakes Hacendado 0% azúcares añadidos;104;Cereales desayuno base de maíz y trigo;100;sí;no;1.0;;;
+22966;Cereales copos de maíz Corn Flakes Hacendado 0% azúcares añadidos;1032;Cereales desayuno base de maíz y trigo;100;sí;no;1.0;;;
 22967;Batido de chocolate Hacendado 0% sin azúcares añadidos;1636;Batido de chocolate;100;sí;sí;1.0;;;
 22974;Dátiles Medjoul con hueso Hacendado;2224;Dátil;100;sí;no;0.9;;;
 22981;Postre de coco natural Alpro sin azúcares añadidos;35;Coco, fresco;86;sí;sí;0.71;;;
@@ -671,7 +671,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 23305;Chuletas de cerdo sajonia;2257;Cerdo, chuleta, crudo;100;sí;no;0.8;;;
 23308;Fiambre de magro de cerdo adobado;1924;Cerdo, panceta, cruda;85;sí;sí;1.0;;;
 23359;Pan de molde blanco natural rústico Hacendado;2160;Pan blanco, de barra;100;sí;no;1.0;;;
-23365;Anacardo natural Hacendado;922;Anacardo, crudo;100;sí;no;1.0;;;
+23365;Anacardo natural Hacendado;1458;Anacardo, crudo;100;sí;no;1.0;;;
 23453;Alubia pinta Hacendado;1881;Judía pinta;100;sí;no;1.0;;;
 23531;Zamburiñas en salsa de vieira Hacendado;1763;Vieira;100;sí;sí;0.25;;;
 23560;Chipirones rellenos enteros en aceite de girasol Hacendado;1806;Chipiron;100;sí;sí;0.7;;;
@@ -779,14 +779,14 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 29100;Harina de trigo Hacendado;2677;Harina de trigo;100;sí;no;1.0;;;
 29106;Harina de trigo grande Hacendado;2677;Harina de trigo;100;sí;no;1.0;;;
 29130;Harina de arroz Hacendado;1630;Arroz;100;sí;no;1.0;;;
-29134;Harina integral de trigo Hacendado;172;Harina de trigo, integral;100;sí;no;1.0;;;
+29134;Harina integral de trigo Hacendado;1113;Harina de trigo, integral;100;sí;no;1.0;;;
 29165;Harina de maíz blanco precocida Hacendado;2644;Harina de maíz;100;sí;no;1.0;;;
-29174;Harina de espelta Hacendado 100% integral;172;Harina de trigo, integral;100;sí;no;1.0;;;
+29174;Harina de espelta Hacendado 100% integral;1113;Harina de trigo, integral;100;sí;no;1.0;;;
 29180;Harina semolosa de trigo Hacendado especial para fritos;1808;Harina de trigo;100;sí;sí;1.0;;;
 29225;Impulsor gasificante en polvo Royal uso alimentario;1891;Cacao en polvo, azucarado;67;sí;sí;1.0;;;
 29314;Bebida de soja 0% azúcar Hacendado;2491;Bebida de soja;100;sí;no;1.0;;;
 29322;Bebida de soja 0% azúcar Hacendado;2491;Bebida de soja;100;sí;no;1.0;;;
-29373;Harina de garbanzo Hacendado;160;Garbanzo, seco, crudo;100;sí;no;1.0;;;
+29373;Harina de garbanzo Hacendado;1020;Garbanzo, seco, crudo;100;sí;no;1.0;;;
 30167;Huevos;2127;Huevo de gallina fresco;100;sí;no;0.88;;;
 30501;Mandarinas;2229;Mandarina;100;sí;no;0.75;;;
 31010;Huevos cocidos;760;Huevo de gallina, pasado por agua;100;sí;no;0.88;;;
@@ -804,7 +804,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 32524;Aroma de vainilla Hacendado;1441;Vainilla;100;sí;sí;1.0;;;
 33440;Piña deshidratada Hacendado;1732;Piña;100;sí;sí;0.57;;;
 34009;Almendra frita y salada Hacendado pelada;535;Almendra, frita, salada;100;sí;sí;1.0;;;
-34014;Almendra tostada Hacendado 0% sal añadida con piel;44;Almendra, cruda;100;sí;no;1.0;;;
+34014;Almendra tostada Hacendado 0% sal añadida con piel;896;Almendra, cruda;100;sí;no;1.0;;;
 34016;Cacahuete tostado con sal Hacendado;1238;Cacahuete, crudo, con cáscara;92;sí;sí;1.0;;;
 34024;Nuez natural Hacendado pelada;1722;Nuez;100;sí;no;1.0;;;
 34025;Avellana tostada Hacendado 0% sal añadida;1633;Avellana;100;sí;no;1.0;;;
@@ -823,7 +823,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 34209;Mango deshidratado Hacendado;426;Mango, crudo;89;sí;sí;1.0;;;
 34212;Palomitas de maíz sabor mantequilla Hacendado para microondas;200;Maíz, crudo;87;sí;sí;1.0;;;
 34229;Carne de Ñora Hacendado;2409;Pimiento rojo, crudo;100;sí;no;1.0;;;
-34231;Cocktail frutos secos mezcla Hacendado;44;Almendra, cruda;100;sí;no;1.0;;;
+34231;Cocktail frutos secos mezcla Hacendado;896;Almendra, cruda;100;sí;no;1.0;;;
 34236;Nuez de Brasil natural Hacendado;1722;Nuez;100;sí;sí;0.5;;;
 34605;Arándanos deshidratados Hacendado;2011;Arandano;100;sí;sí;0.99;;;
 34606;Nuez natural Hacendado;1722;Nuez;100;sí;no;1.0;;;
@@ -832,7 +832,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 34821;Maíz frito crujiente y tierno Hacendado;1704;Maíz frito;100;sí;sí;1.0;;;
 34822;Palomitas de maíz con sal Hacendado para microondas;200;Maíz, crudo;87;sí;sí;1.0;;;
 34838;Nuez macadamia Hacendado tostada con sal;1722;Nuez;100;sí;sí;0.5;;;
-34865;Almendra natural Hacendado;44;Almendra, cruda;100;sí;no;1.0;;;
+34865;Almendra natural Hacendado;896;Almendra, cruda;100;sí;no;1.0;;;
 34868;Cacahuete frito y salado Hacendado con piel;536;Cacahuete, frito, salado;100;sí;sí;1.0;;;
 34924;Cocktail de fruta deshidratada Hacendado;1696;Licores de frutas;73;sí;sí;1.0;;;
 34962;Semillas lino dorado Hacendado;2039;Semilla de lino;100;sí;no;1.0;;;
@@ -841,7 +841,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 34997;Nuez Pecana natural Hacendado pelada;1722;Nuez;100;sí;no;1.0;;;
 35221;Pimiento rojo y verde Hacendado ultracongelado;2409;Pimiento rojo, crudo;100;sí;no;0.85;;;
 35286;Costilla de cerdo churrasco;2257;Cerdo, chuleta, crudo;100;sí;no;0.7;;;
-35404;Espárragos blancos gruesos Hacendado cortos;151;Espárrago, verde;100;sí;no;1.0;;;
+35404;Espárragos blancos gruesos Hacendado cortos;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
 35466;Postre de soja sabor chocolate Hacendado;291;Soja, fresca;86;sí;sí;1.0;;;
 35618;Pasta estrellas sin gluten Felicia;2015;Pastas de te;62;sí;sí;1.0;;;
 35643;Pasta fusilli sin gluten Felicia;2015;Pastas de te;62;sí;sí;1.0;;;
@@ -872,9 +872,9 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 50008;Queso grana padano Zanetti;2512;Queso parmesano;100;sí;no;1.0;;;
 50020;Queso tierno tronchón mezcla Hacendado;2516;Queso tierno, genérico;100;sí;no;1.0;;;
 50021;Queso rulo de cabra Hacendado;2500;Queso cabra, curado;100;sí;no;1.0;;;
-50478;Queso tierno gouda de vaca Hacendado;941;Queso Gouda;100;sí;no;1.0;;;
-50480;Queso tierno maasdam de vaca Holland Corona;941;Queso Gouda;100;sí;no;1.0;;;
-50483;Queso tierno bola edam de vaca Holland Corona;941;Queso Gouda;100;sí;no;1.0;;;
+50478;Queso tierno gouda de vaca Hacendado;1398;Queso gouda;100;sí;no;1.0;;;
+50480;Queso tierno maasdam de vaca Holland Corona;1398;Queso gouda;100;sí;no;1.0;;;
+50483;Queso tierno bola edam de vaca Holland Corona;1398;Queso gouda;100;sí;no;1.0;;;
 50589;Queso curado DOP manchego de oveja Hacendado;1901;Queso curado, genérico;100;sí;no;1.0;;;
 50619;Queso brie marcillat de vaca Plaisir de Roy;2499;Queso brie;100;sí;no;1.0;;;
 50915;Queso tierno bajo en sal mezcla Hacendado;2516;Queso tierno, genérico;100;sí;no;1.0;;;
@@ -912,7 +912,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 51072;Queso fresco mascarpone de vaca Hacendado;2507;Queso fresco de burgos;100;sí;no;1.0;;;
 51073;Queso untar original Philadelphia;1961;Queso para untar;81;sí;sí;1.0;;;
 51079;Queso untar light Philadelphia;1961;Queso para untar;81;sí;sí;1.0;;;
-51111;Queso curado y cheddar Hacendado en dados;266;Queso cheddar;100;sí;no;1.0;;;
+51111;Queso curado y cheddar Hacendado en dados;1005;Queso Cheddar;100;sí;no;1.0;;;
 51167;Mousse de queso de vaca con ajo y finas hierbas Hacendado;1774;Ajo;100;sí;sí;0.0082;;;
 51181;Crema de queso camembert Hacendado;633;Queso Camembert 20-30% MG/ES;83;sí;sí;1.0;;;
 51191;Queso fresco de vaca Hacendado;2507;Queso fresco de burgos;100;sí;no;1.0;;;
@@ -931,7 +931,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 51230;Mozzarella fresca light de vaca Hacendado;1787;Queso mozzarella;100;sí;no;1.0;;;
 51619;Queso rulo con piña y almendra Liptana;1732;Piña;100;sí;sí;0.57;;;
 51627;Queso azul de vaca Hacendado;2514;Queso roquefort;100;sí;no;1.0;;;
-51630;Queso curado cheddar Hacendado;266;Queso cheddar;100;sí;no;1.0;;;
+51630;Queso curado cheddar Hacendado;1005;Queso Cheddar;100;sí;no;1.0;;;
 52406;Queso fresco Burgos natural Hacendado;2507;Queso fresco de burgos;100;sí;no;1.0;;;
 52407;Queso fresco Burgos desnatado 0% MG Hacendado;2507;Queso fresco de burgos;100;sí;no;1.0;;;
 52408;Queso fresco Burgos natural Hacendado;2507;Queso fresco de burgos;100;sí;no;1.0;;;
@@ -947,7 +947,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 52637;Arroz redondo Sabor;1630;Arroz;100;sí;no;1.0;;;
 52639;Bebida de avena Hacendado 0% azúcar;2491;Bebida de soja;100;sí;no;1.0;;;sí
 52640;Bebida de avena Hacendado 0% azúcar;2491;Bebida de soja;100;sí;no;1.0;;;sí
-52668;Anacardo tostado 0% sal añadida Hacendado;922;Anacardo, crudo;100;sí;no;1.0;;;
+52668;Anacardo tostado 0% sal añadida Hacendado;1458;Anacardo, crudo;100;sí;no;1.0;;;
 52672;Burger de cerdo;2257;Cerdo, chuleta, crudo;88;sí;sí;0.8;;;
 52749;Cebolla caramelizada Hacendado;1773;Cebolla;100;sí;sí;0.0088;;;
 52751;Cereales avena Crunchy Hacendado de cacao;59;Avena, cruda;89;sí;sí;1.0;;;
@@ -958,7 +958,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 52889;Placas para canelones El Pavo;1864;Canelones;100;sí;sí;1.0;;;
 52896;Macedonia mix de frutas en almíbar Hacendado;198;Macedonia de frutas, conserva en su jugo;93;sí;sí;1.0;;;
 60009;Cocktail frutos secos tostados Hacendado sabor ahumado;2061;Frutos secos;100;sí;sí;1.0;;;
-60015;Cocktail frutos secos tostados 0% sal añadida Hacendado;44;Almendra, cruda;100;sí;no;1.0;;;
+60015;Cocktail frutos secos tostados 0% sal añadida Hacendado;896;Almendra, cruda;100;sí;no;1.0;;;
 60235;2 Baguettes para hornear;2160;Pan blanco, de barra;100;sí;no;1.0;;;
 60236;Cereales con salvado de trigo Fibra Sticks Hacendado;1998;Salvado de trigo;100;sí;no;1.0;;;
 60307;Margarina con sal Hacendado;1333;Margarina de maíz;100;sí;no;1.0;;;
@@ -989,7 +989,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 61229;Alcachofa baby Hacendado ultracongelada;1176;Alcachofa, cruda;100;sí;no;0.45;;;
 61231;Coliflor Hacendado ultracongelada;859;Coliflor, congelada, cruda;100;sí;no;1.0;;;
 61233;Habas fina Hacendado ultracongelada;2194;Haba, fresca;100;sí;no;1.0;;;
-61238;Espárrago verde troceado Hacendado ultracongelado;151;Espárrago, verde;100;sí;no;1.0;;;
+61238;Espárrago verde troceado Hacendado ultracongelado;1179;Espárrago, verde;100;sí;no;1.0;;;
 61248;Coles de Bruselas Hacendado ultracongeladas;36;Col de bruselas, congelada;100;sí;no;1.0;;;
 61251;Ajo troceado Hacendado ultracongelado;2361;Ajo;100;sí;no;1.0;;;
 61252;Habas baby Hacendado ultracongelada;2194;Haba, fresca;100;sí;no;1.0;;;
@@ -1091,7 +1091,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 69289;Jengibre;1995;Jengibre;100;sí;no;1.0;;;
 69297;Ajos morados;2361;Ajo;100;sí;no;0.9;;;
 69310;Pimiento rojo;2409;Pimiento rojo, crudo;100;sí;no;0.85;;;
-69320;Pimiento verde freír;2409;Pimiento rojo, crudo;100;sí;no;0.85;;;
+69320;Pimiento verde freír;1847;Pimiento verde, crudo;100;sí;no;0.85;;;
 69326;Berenjena;2370;Berenjena;100;sí;no;0.9;;;
 69338;Calabacín verde;2376;Calabacín;100;sí;no;0.95;;;
 69383;Wakame ensalada de alga marina Hacendado congelada;2060;Ensalada;100;sí;sí;1.0;;;
@@ -1124,7 +1124,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 69623;Alcachofa;1176;Alcachofa, cruda;100;sí;no;0.45;;;
 69647;Setas shiitake;1656;Champiñon;100;sí;no;1.0;;;
 69653;Setas;1656;Champiñon;100;sí;no;1.0;;;
-69656;Espárragos verdes finos;151;Espárrago, verde;100;sí;no;1.0;;;
+69656;Espárragos verdes finos;1179;Espárrago, verde;100;sí;no;1.0;;;
 69657;Mix de setas intenso;1656;Champiñon;100;sí;no;1.0;;;
 69664;Champiñones Portobello;1656;Champiñon;100;sí;no;1.0;;;
 69669;Zanahorias;2424;Zanahoria, cruda;100;sí;no;0.9;;;
@@ -1170,7 +1170,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 69990;Tomates cherry;2421;Tomate;100;sí;no;1.0;;;
 70740;Edamame soja verde Hacendado ultracongelada;1124;Soja, fresca;100;sí;no;1.0;;;
 70741;Edulcorante líquido sacarina Hacendado;120;Yogur líquido, entero, con cereales;66;sí;sí;1.0;;;
-70744;Espárragos blancos delgados Hacendado cortos;151;Espárrago, verde;100;sí;no;1.0;;;
+70744;Espárragos blancos delgados Hacendado cortos;1669;Esparragos blancos en conserva;100;sí;no;1.0;;;
 73249;Barritas de cereales y chocolate blanco Hacendado;1914;Chocolate blanco;100;sí;sí;1.0;;;
 80292;Preparado para repostería y panificación Hacendado;2495;Preparado lácteo con omega 3;58;sí;sí;1.0;;;
 80293;Impulsor gasificante repostería Hacendado para uso alimentario;238;Pasta alimenticia, integral, cruda;47;sí;sí;1.0;;;
@@ -1233,7 +1233,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 86747;Queso semicurado de vaca Mahón Menorca Hacendado;2515;Queso semicurado, genérico;100;sí;no;1.0;;;
 86750;Pan de molde cereales sin gluten Hacendado;1876;Cereales, en polvo, solubles (eko);87;sí;sí;1.0;;;
 86766;Dulce de membrillo taco Hacendado;206;Membrillo, crudo;92;sí;sí;0.61;;;
-86809;Cocktail frutos secos natural Hacendado;44;Almendra, cruda;100;sí;no;1.0;;;
+86809;Cocktail frutos secos natural Hacendado;896;Almendra, cruda;100;sí;no;1.0;;;
 86820;Relleno fajitas pollo, pimientos y cebolla Hacendado ultracongelado;1773;Cebolla;100;sí;sí;0.0088;;;
 86840;Pasta fresca gnocchi rellena de quesos Hacendado;2015;Pastas de te;84;sí;sí;1.0;;;
 86911;Burger de pollo gruesa;1386;Pollo, ala, con piel, cruda;84;sí;sí;1.0;;;

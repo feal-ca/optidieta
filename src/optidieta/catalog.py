@@ -86,7 +86,10 @@ def build_catalog(products: list[MercaProduct], bedca: pd.DataFrame, mapping: pd
             row[known_col(n.key)] = bool(b[known_col(n.key)])
         lab = labels.get(mid) or {}
         if lab:
-            if label_is_plausible(lab):
+            e_lab, e_bed = lab.get("energia_kcal"), row[col("energia_kcal")]
+            lejos = (e_lab is not None and e_bed == e_bed and e_bed > 0
+                     and not (e_bed / 3 <= e_lab <= e_bed * 3))  # etiqueta de otro producto
+            if label_is_plausible(lab) and not lejos:
                 for k, v in lab.items():
                     row[col(k)] = float(v)
                     row[known_col(k)] = True
