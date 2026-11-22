@@ -76,3 +76,8 @@ def test_propose_eggs_default_unit_weight():
     g = dict(zip(df.mercadona_id, df.g_por_unidad))
     assert g["12"] == 720 and g["13"] == 720
     assert pd.isna(g["14"])
+
+
+def test_merge_drops_duplicate_ids():
+    old = pd.DataFrame([_row("1", 999, "sí"), _row("1", 999, "sí")])
+    assert list(merge(old, pd.DataFrame([_row("2", 160, "no")])).mercadona_id) == ["1", "2"]

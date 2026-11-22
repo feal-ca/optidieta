@@ -86,7 +86,7 @@ def merge(existing: pd.DataFrame, proposed: pd.DataFrame) -> pd.DataFrame:
         reviewed = existing[existing["revisado"] == "sí"]
         keep = set(reviewed["mercadona_id"])
         out = pd.concat([reviewed, proposed[~proposed["mercadona_id"].isin(keep)]], ignore_index=True)
-    out = out[COLUMNS]
+    out = out[COLUMNS].drop_duplicates("mercadona_id", keep="first")
     key = pd.to_numeric(out["mercadona_id"], errors="coerce")
     return out.assign(_k=key).sort_values(["_k", "mercadona_id"], kind="stable").drop(columns="_k").reset_index(drop=True)
 

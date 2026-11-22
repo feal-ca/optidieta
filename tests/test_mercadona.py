@@ -154,3 +154,20 @@ class TimeoutOnce(FakeSession):
 def test_timeouts_retried(tmp_path):
     prods = fetch_all(tmp_path, include={120}, session=TimeoutOnce(), delay=0)
     assert len(prods) == N_PRODUCTS
+
+
+def test_product_in_two_subcategories_listed_once(tmp_path):
+    cats = json.loads(json.dumps(CATS))
+    cats["results"][0]["categories"].append({"id": 999, "name": "Duplicada"})
+
+    class Dup(FakeSession):
+        def get(self, url, **k):
+            if url.endswith("/categories/"):
+                return FakeResp(cats)
+            if "categories/999" in url:
+                return FakeResp(dict(CAT120, id=999))
+            return super().get(url, **k)
+
+    prods = fetch_all(tmp_path, include={120, 999}, session=Dup(), delay=0)
+    assert len(prods) == N_PRODUCTS
+    assert len({p.id for p in prods}) == N_PRODUCTS

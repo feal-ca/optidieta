@@ -117,6 +117,7 @@ def fetch_all(cache_dir: Path, include: set[int], session=None, delay: float = 1
         (cache / "fetched_at.txt").write_text(datetime.now().isoformat(timespec="minutes"), encoding="utf-8")
     cats = _get_cached(session, cache, "categories", "categories", delay)
     out: list[MercaProduct] = []
+    seen: set[str] = set()  # un producto puede estar en varias subcategorías
     for top in cats.get("results", []):
         for sub in top.get("categories", []):
             if int(sub["id"]) not in include:
@@ -124,6 +125,9 @@ def fetch_all(cache_dir: Path, include: set[int], session=None, delay: float = 1
             data = _get_cached(session, cache, f"cat_{sub['id']}", f"categories/{sub['id']}", delay)
             for leaf in data.get("categories", []):
                 for listing in leaf.get("products", []):
+                    if str(listing["id"]) in seen:
+                        continue
+                    seen.add(str(listing["id"]))
                     detail = _get_cached(session, cache, f"product_{listing['id']}", f"products/{listing['id']}", delay)
                     if detail.get("_no_disponible"):
                         continue
