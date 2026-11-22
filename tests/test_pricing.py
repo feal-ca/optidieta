@@ -37,3 +37,10 @@ def test_zero_edible_portion_treated_as_one():
 
 def test_price_per_100g_format():
     assert price_per_100g(product(precio_ref=0.45, formato_ref="100 g"), 1.0, None, None) == pytest.approx(0.45)
+
+
+def test_price_eggs_dozen_and_ten():
+    dz = product(nombre="Huevos", precio_ref=2.625, formato_ref="dz", precio_envase=5.25)
+    dc = product(nombre="Huevos grandes L", precio_ref=3.05, formato_ref="dc", precio_envase=3.05)
+    assert price_per_100g(dz, 1.0, None, None) == pytest.approx(2.625 / (12 * 0.6))
+    assert price_per_100g(dc, 1.0, None, None) == pytest.approx(3.05 / (10 * 0.6))
