@@ -1,0 +1,43 @@
+{
+  "_nota": "Valores de referencia dietética EFSA (DRV) para adultos. Formato: número | {\"h\": x, \"m\": y} | {\"por_kg\": x} | {\"edad_lt\": n, \"si\": x, \"no\": y}. pct_energia: fracción de la energía total.",
+  "energia": {
+    "pal": 1.6,
+    "banda": 0.05,
+    "fuente": "EFSA 2013 (energía): TMB de Henry × PAL 1,6 (actividad moderada)",
+    "henry_mj": {
+      "h": [[30, 0.0669, 2.28], [60, 0.0592, 2.48], [999, 0.0563, 2.15]],
+      "m": [[30, 0.0546, 2.33], [60, 0.0407, 2.90], [999, 0.0424, 2.38]]
+    }
+  },
+  "nutrientes": {
+    "proteina_g": {"min": {"por_kg": 0.83}, "fuente": "EFSA PRI"},
+    "grasa_g": {"kind": "pct_energia", "kcal_por_g": 9, "min": 0.20, "max": 0.35, "fuente": "EFSA RI 20–35 % E"},
+    "hidratos_g": {"kind": "pct_energia", "kcal_por_g": 4, "min": 0.45, "max": 0.60, "fuente": "EFSA RI 45–60 % E"},
+    "grasa_sat_g": {"kind": "pct_energia", "kcal_por_g": 9, "max": 0.10, "fuente": "OMS < 10 % E"},
+    "azucares_g": {"kind": "pct_energia", "kcal_por_g": 4, "max": 0.10, "active": false, "fuente": "OMS < 10 % E (azúcares libres)"},
+    "fibra_g": {"min": 25, "fuente": "EFSA AI"},
+    "sodio_mg": {"max": 2000, "fuente": "EFSA ingesta segura y adecuada"},
+    "cloruro_mg": {"max": 3100, "fuente": "EFSA ingesta segura y adecuada"},
+    "potasio_mg": {"min": 3500, "fuente": "EFSA AI"},
+    "calcio_mg": {"min": {"edad_lt": 25, "si": 1000, "no": 950}, "max": 2500, "fuente": "EFSA PRI / UL"},
+    "magnesio_mg": {"min": {"h": 350, "m": 300}, "fuente": "EFSA AI"},
+    "fosforo_mg": {"min": 550, "fuente": "EFSA AI"},
+    "hierro_mg": {"min": {"h": 11, "m": {"edad_lt": 50, "si": 16, "no": 11}}, "max": 40, "fuente": "EFSA PRI / nivel seguro 2024"},
+    "zinc_mg": {"min": {"h": 11.7, "m": 9.3}, "max": 25, "fuente": "EFSA PRI (fitato 600 mg) / UL"},
+    "cobre_mg": {"min": {"h": 1.6, "m": 1.3}, "max": 5, "fuente": "EFSA AI / UL"},
+    "manganeso_mg": {"min": 3, "fuente": "EFSA AI"},
+    "selenio_ug": {"min": 70, "max": 255, "fuente": "EFSA AI / UL 2023"},
+    "yodo_ug": {"min": 150, "max": 600, "fuente": "EFSA AI / UL"},
+    "vit_a_ug": {"min": {"h": 750, "m": 650}, "fuente": "EFSA PRI (sin UL: BEDCA da ER con carotenoides)"},
+    "vit_d_ug": {"min": 15, "max": 100, "fuente": "EFSA AI / UL"},
+    "vit_e_mg": {"min": {"h": 13, "m": 11}, "max": 300, "fuente": "EFSA AI / UL"},
+    "tiamina_mg": {"min": {"h": 1.1, "m": 0.9}, "fuente": "EFSA 0,1 mg/MJ"},
+    "riboflavina_mg": {"min": 1.6, "fuente": "EFSA PRI"},
+    "niacina_mg": {"min": {"h": 17, "m": 14}, "fuente": "EFSA 1,6 mg EN/MJ"},
+    "vit_b5_mg": {"min": 5, "fuente": "EFSA AI"},
+    "vit_b6_mg": {"min": {"h": 1.7, "m": 1.6}, "fuente": "EFSA PRI"},
+    "vit_b12_ug": {"min": 4, "fuente": "EFSA AI"},
+    "vit_c_mg": {"min": {"h": 110, "m": 95}, "fuente": "EFSA PRI"},
+    "folato_ug": {"min": 330, "fuente": "EFSA PRI"}
+  }
+}
