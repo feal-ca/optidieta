@@ -1,0 +1,119 @@
+{
+ "count": 2,
+ "results": [
+  {
+   "id": 13,
+   "name": "Arroz, legumbres y pasta",
+   "order": 10,
+   "is_extended": false,
+   "categories": [
+    {
+     "id": 118,
+     "name": "Arroz",
+     "order": 10,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 121,
+     "name": "Legumbres",
+     "order": 10,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 120,
+     "name": "Pasta y fideos",
+     "order": 10,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    }
+   ],
+   "icon_url": null
+  },
+  {
+   "id": 4,
+   "name": "Charcutería y quesos",
+   "order": 159,
+   "is_extended": false,
+   "categories": [
+    {
+     "id": 48,
+     "name": "Aves y jamón cocido",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 52,
+     "name": "Bacón y salchichas",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 49,
+     "name": "Chopped y mortadela",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 51,
+     "name": "Embutido curado",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 50,
+     "name": "Jamón serrano",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 58,
+     "name": "Paté y sobrasada",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 54,
+     "name": "Queso curado, semicurado y tierno",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 56,
+     "name": "Queso lonchas, rallado y en porciones",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    },
+    {
+     "id": 53,
+     "name": "Queso untable, fresco y especialidades",
+     "order": 159,
+     "layout": 1,
+     "published": true,
+     "is_extended": false
+    }
+   ],
+   "icon_url": null
+  }
+ ]
+}

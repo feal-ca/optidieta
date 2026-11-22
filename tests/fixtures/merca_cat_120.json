@@ -1,0 +1,344 @@
+{
+ "id": 120,
+ "name": "Pasta y fideos",
+ "order": 10,
+ "layout": 1,
+ "published": true,
+ "is_extended": false,
+ "categories": [
+  {
+   "id": 442,
+   "name": "Fideos",
+   "order": 10,
+   "layout": 2,
+   "published": true,
+   "is_extended": false,
+   "image": null,
+   "subtitle": null,
+   "products": [
+    {
+     "id": "13577",
+     "slug": "fideo-cabello-angel-hacendado-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/13577/fideo-cabello-angel-hacendado-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/66992393aeb518b19a12b4844845ac21.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Fideo cabello de ángel Hacendado",
+     "main_feature": null,
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "1.70",
+      "unit_price": "0.85",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "1.700",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    },
+    {
+     "id": "6253",
+     "slug": "fideua-hacendado-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/6253/fideua-hacendado-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/e5b402647751a7b60f87b4663bdc86e5.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Fideuá Hacendado",
+     "main_feature": null,
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "1.70",
+      "unit_price": "0.85",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "1.700",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    },
+    {
+     "id": "6261",
+     "slug": "fideo-grueso-hacendado-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/6261/fideo-grueso-hacendado-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/0778f8e6272f1c743d1da88f16c4d978.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Fideo grueso Hacendado",
+     "main_feature": null,
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "1.70",
+      "unit_price": "0.85",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "1.700",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    }
+   ]
+  },
+  {
+   "id": 443,
+   "name": "Macarrones, pajaritas y hélices",
+   "order": 10,
+   "layout": 2,
+   "published": true,
+   "is_extended": false,
+   "image": null,
+   "subtitle": null,
+   "products": [
+    {
+     "id": "6305",
+     "slug": "pajaritas-vegetales-hacendado-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/6305/pajaritas-vegetales-hacendado-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/a6d6601980b0a80c5f5c5f9c1b3573e3.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Pajaritas vegetales Hacendado",
+     "main_feature": null,
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "2.00",
+      "unit_price": "1.00",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "2.000",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    },
+    {
+     "id": "35777",
+     "slug": "pasta-penne-integral-hacendado-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/35777/pasta-penne-integral-hacendado-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/231ef027d5b28f7040b3075da848399f.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Macarrón rayado integral Hacendado",
+     "main_feature": "",
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "2.40",
+      "unit_price": "1.20",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "2.400",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    },
+    {
+     "id": "6358",
+     "slug": "pasta-tortiglioni-armando-paquete",
+     "limit": 999,
+     "badges": {
+      "is_water": false,
+      "requires_age_check": false
+     },
+     "status": null,
+     "packaging": "Paquete",
+     "published": true,
+     "share_url": "https://tienda.mercadona.es/product/6358/pasta-tortiglioni-armando-paquete",
+     "thumbnail": "https://prod-mercadona.imgix.net/images/a4d3db444d4e97cf724bd457aadcb05a.jpg?fit=crop&h=300&w=300",
+     "categories": [
+      {
+       "id": 13,
+       "name": "Arroz, legumbres y pasta",
+       "level": 0,
+       "order": 10
+      }
+     ],
+     "display_name": "Pasta tortiglioni Armando",
+     "main_feature": "",
+     "unavailable_from": null,
+     "price_instructions": {
+      "iva": null,
+      "is_new": false,
+      "is_pack": false,
+      "pack_size": null,
+      "unit_name": null,
+      "unit_size": 0.5,
+      "bulk_price": "2.80",
+      "unit_price": "1.40",
+      "approx_size": false,
+      "size_format": "kg",
+      "total_units": null,
+      "unit_selector": true,
+      "bunch_selector": false,
+      "drained_weight": null,
+      "selling_method": 0,
+      "tax_percentage": "10.000",
+      "price_decreased": false,
+      "reference_price": "2.800",
+      "min_bunch_amount": 1.0,
+      "reference_format": "kg",
+      "previous_unit_price": null,
+      "increment_bunch_amount": 1.0
+     },
+     "unavailable_weekdays": [],
+     "is_new_arrival": false
+    }
+   ]
+  }
+ ],
+ "next_category": {
+  "id": 89,
+  "name": "Azúcar y edulcorante"
+ }
+}

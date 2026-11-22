@@ -1,0 +1,39 @@
+# Subcategorías de Mercadona (nivel 1) que entran en el catálogo: alimentos básicos.
+# Dentro de cada una, los procesados se marcan `excluir = sí` en data/mapping.csv.
+include = [
+  112, # Aceite, vinagre y sal
+  133, # Frutos secos y fruta desecada
+  118, # Arroz
+  121, # Legumbres
+  120, # Pasta y fideos
+  89,  # Azúcar y edulcorante
+  38,  # Aves y pollo
+  37,  # Cerdo
+  42,  # Conejo y cordero
+  40,  # Vacuno
+  44,  # Hamburguesas y picadas
+  78,  # Cereales
+  54,  # Queso curado, semicurado y tierno
+  53,  # Queso untable, fresco y especialidades
+  145, # Congelados: fruta y verdura
+  149, # Congelados: pescado
+  122, # Atún y otras conservas de pescado
+  123, # Berberechos y mejillones
+  127, # Conservas de verdura y frutas
+  126, # Tomate
+  27,  # Fruta
+  28,  # Lechuga y ensalada preparada
+  29,  # Verdura
+  77,  # Huevos
+  72,  # Leche y bebidas vegetales
+  75,  # Mantequilla y margarina
+  32,  # Marisco
+  34,  # Pescado congelado
+  31,  # Pescado fresco
+  69,  # Harina y preparado repostería
+  59,  # Pan de horno
+  60,  # Pan de molde y otras especialidades
+  106, # Postres de soja
+  104, # Yogures naturales y sabores
+  103, # Yogures desnatados
+]
