@@ -137,7 +137,8 @@ R = [
     ((145,), r"habas", "Haba, fresca", {}),
     ((145,), r"wakame", X, {}),
     ((127,), r"palmito|yemas de esparrago|esparragos blancos", "Esparragos blancos en conserva", {}),
-    ((127,), r"melocoton light|piña en su jugo", "Piña, enlatada en su jugo", {}),
+    ((127,), r"melocoton light", "Melocotón", {}),
+    ((127,), r"piña en su jugo", "Piña, enlatada en su jugo", {}),
     ((127,), r"carne de ñora", "Pimiento rojo, crudo", {}),
     # ---- Tomate (126) ----
     ((126,), r"tomate (entero|triturado|troceado|tamizado)", "Tomate, maduro, pelado y triturado, enlatado", {}),
@@ -166,10 +167,10 @@ R = [
     ((69,), r"maiz", "Harina de maíz", {}),
     ((69,), r"harina|semola", "Harina de trigo", {}),
     ((78,), r"avena|copos de avena", "Avena, cruda", {}),
-    ((78,), r"muesli", "Muesli", {}),
+    ((78,), r"muesli", "Muesli", {"si_no_enriquecido": "Avena, cruda"}),
     ((78,), r"salvado", "Salvado de trigo", {}),
-    ((78,), r"corn flakes|copos de maiz", "Cereales desayuno base de maíz y trigo", {}),
-    ((78,), r"copos de trigo|cereal mix|crujientes", "Muesli", {}),
+    ((78,), r"corn flakes|copos de maiz", "Cereales desayuno base de maíz y trigo", {"si_no_enriquecido": "Avena, cruda"}),
+    ((78,), r"copos de trigo|cereal mix|crujientes", "Muesli", {"si_no_enriquecido": "Avena, cruda"}),
     # ---- Pan (59, 60) ----
     ((59, 60), r"centeno", "Pan de centeno", {}),
     ((59, 60), r"integral|espelta|avena|semillas|cereales", "Pan integral", {}),
@@ -320,6 +321,8 @@ def main(check: bool) -> None:
         else:
             for subs, rx, b, ex in rules:
                 if (subs is None or x.subcategoria_id in subs) and rx.search(name):
+                    if ex.get("si_no_enriquecido") and "vitamin" not in norm(x.ingredientes):
+                        b = ex["si_no_enriquecido"]  # BEDCA solo tiene cereales de desayuno enriquecidos
                     if b is None or norm(b) not in idx:
                         upd["excluir"] = "sí"
                     else:

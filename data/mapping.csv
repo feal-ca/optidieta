@@ -237,14 +237,14 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 9445;Barritas con proteínas sabor coco y chocolate Enervit Sport;35;Coco, fresco;86;sí;sí;0.71;;;
 9474;Cereales crujientes avena tostada Hacendado con semillas y frutos secos;1010;Avena, cruda;100;sí;no;1.0;;;
 9487;Cereales copos de trigo integral y arroz Hacendado bañados en chocolate con leche;56;Arroz integral, crudo;95;sí;sí;1.0;;;
-9488;Cereales copos de trigo integral y arroz Hacendado 0% azúcares añadidos;1878;Muesli;100;sí;no;1.0;;;
-9491;Muesli Hacendado con frutas;1878;Muesli;100;sí;no;1.0;;;
-9492;Muesli Hacendado 50% frutas y frutos secos;1878;Muesli;100;sí;no;1.0;;;
+9488;Cereales copos de trigo integral y arroz Hacendado 0% azúcares añadidos;1010;Avena, cruda;100;sí;no;1.0;;;
+9491;Muesli Hacendado con frutas;1010;Avena, cruda;100;sí;no;1.0;;;
+9492;Muesli Hacendado 50% frutas y frutos secos;1010;Avena, cruda;100;sí;no;1.0;;;
 9508;Cereales copos de trigo Chocodays Hacendado con chocolate;587;Chocolate, negro;92;sí;sí;1.0;;;
-9532;Cereales Cereal Mix Hacendado 0% azúcares añadidos;1878;Muesli;100;sí;no;1.0;;;
+9532;Cereales Cereal Mix Hacendado 0% azúcares añadidos;1010;Avena, cruda;100;sí;no;1.0;;;
 9536;Muesli Hacendado con quinoa, chía y chocolate negro;28;Chocolate negro;100;sí;sí;1.0;;;
 9547;Cereales rellenos de crema de cacao y avellana Hacendado sin gluten;1633;Avellana;100;sí;sí;0.41;;;
-9571;Cereales copos de trigo espelta integral Hacendado 0% azúcares añadidos;1878;Muesli;100;sí;no;1.0;;;
+9571;Cereales copos de trigo espelta integral Hacendado 0% azúcares añadidos;1010;Avena, cruda;100;sí;no;1.0;;;
 9588;Harina fina de maíz Hacendado;2644;Harina de maíz;100;sí;no;1.0;;;
 9638.1;Barra de pan rústica;2160;Pan blanco, de barra;100;sí;no;1.0;;;
 9638.2;Barra de pan rústica rebanada;2160;Pan blanco, de barra;100;sí;no;1.0;;;
@@ -412,7 +412,7 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 15203;Piña en su jugo Hacendado rodajas;1167;Piña, enlatada en su jugo;100;sí;no;1.0;;;
 15206;Melocotón en almíbar Hacendado;1913;Melocotón en almíbar;100;sí;sí;1.0;;;
 15220;Piña en su jugo Hacendado rodajas;1167;Piña, enlatada en su jugo;100;sí;no;1.0;;;
-15260;Melocotón light Hacendado sin azúcares añadidos;1167;Piña, enlatada en su jugo;100;sí;no;1.0;;;
+15260;Melocotón light Hacendado sin azúcares añadidos;2232;Melocotón;100;sí;no;1.0;;;
 15275;Preparado en polvo gelatina maracuyá Hacendado;1860;Gelatina;100;sí;sí;1.0;;;
 15287;Bastones de batata Hacendado ultracongelada;70;Batata, cruda;100;sí;no;0.85;;;
 15301;Dátiles desecados sin hueso Hacendado;2224;Dátil;100;sí;no;0.9;;;
