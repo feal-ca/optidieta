@@ -92,9 +92,12 @@ def _num(s: str | None) -> float | None:
     return v if math.isfinite(v) else None
 
 
-def parse_food(xml: str) -> BedcaFood:
+def parse_food(xml: str) -> BedcaFood | None:
+    """None si BEDCA devuelve el alimento vacío (pasa con algunos ids de la lista)."""
     root = ET.fromstring(xml)
     food = root.find("food")
+    if food is None or not (food.findtext("f_id") or "").strip():
+        return None
     valores: dict[str, float | None] = {n.key: None for n in NUTRIENTS}
     sin_mapear: list[str] = []
     for fv in food.iter("foodvalue"):

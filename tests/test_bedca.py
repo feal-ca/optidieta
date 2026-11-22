@@ -69,3 +69,8 @@ def test_fetch_writes_cache(tmp_path):
     fetch_food(5, tmp_path, session=s)
     fetch_food(5, tmp_path, session=s)
     assert s.calls == 1
+
+
+def test_empty_food_returns_none():
+    xml = '<?xml version="1.0" encoding="utf-8"?><foodresponse><food/><componentList></componentList></foodresponse>'
+    assert parse_food(xml) is None

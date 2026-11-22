@@ -62,7 +62,9 @@ def cmd_fetch(args) -> None:
     lst = bedca.fetch_food_list(p["bedca"], session=s)
     foods, tick = [], _progress("alimentos BEDCA")
     for fid, _ in lst:
-        foods.append(bedca.parse_food(bedca.fetch_food(fid, p["bedca"], session=s, delay=args.delay / 3)))
+        f = bedca.parse_food(bedca.fetch_food(fid, p["bedca"], session=s, delay=args.delay / 3))
+        if f is not None:
+            foods.append(f)
         tick()
     bedca.foods_frame(foods).to_parquet(p["bedca_frame"])
     print(f"  {len(foods)} alimentos")
@@ -107,7 +109,9 @@ def cmd_census(args) -> None:
     p = paths()
     c = collections.Counter()
     for f in p["bedca"].glob("f_*.xml"):
-        c.update(bedca.parse_food(f.read_text(encoding="utf-8")).sin_mapear)
+        food = bedca.parse_food(f.read_text(encoding="utf-8"))
+        if food is not None:
+            c.update(food.sin_mapear)
     for name, n in c.most_common():
         print(f"{n:5d}  {name}")
 
