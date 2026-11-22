@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<foodresponse><food><f_id>999</f_id><f_ori_name>Alimento de prueba, crudo</f_ori_name><edible_portion>0.730000</edible_portion>
+<foodvalue><c_id>319</c_id><c_ori_name>hierro, total</c_ori_name><best_location></best_location><v_unit>mg</v_unit></foodvalue><foodvalue><c_id>409</c_id><c_ori_name>energía, total</c_ori_name><best_location>1500</best_location><v_unit>kJ</v_unit></foodvalue><foodvalue><c_id>416</c_id><c_ori_name>proteina, total</c_ori_name><best_location>3,5</best_location><v_unit>g</v_unit></foodvalue><foodvalue><c_id>9999</c_id><c_ori_name>componente raro</c_ori_name><best_location>1</best_location><v_unit>g</v_unit></foodvalue></food></foodresponse>
