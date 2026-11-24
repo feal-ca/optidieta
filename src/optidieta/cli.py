@@ -13,7 +13,7 @@ import requests
 
 from optidieta.catalog import build_catalog
 from optidieta.mapping import merge, propose, read_mapping, write_mapping
-from optidieta.sources import bedca, mercadona, off
+from optidieta.sources import bedca, etiqueta, mercadona, off
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -26,7 +26,7 @@ def paths() -> dict[str, Path]:
     d = data_dir()
     return {
         "data": d, "raw": d / "raw", "merca": d / "raw" / "mercadona", "bedca": d / "raw" / "bedca",
-        "off": d / "raw" / "off", "products": d / "raw" / "products.json", "bedca_frame": d / "raw" / "bedca.parquet",
+        "off": d / "raw" / "off", "etiquetas": d / "raw" / "etiquetas", "products": d / "raw" / "products.json", "bedca_frame": d / "raw" / "bedca.parquet",
         "mapping": d / "mapping.csv", "catalog": d / "catalog.parquet",
         "subcats": ROOT / "config" / "subcategorias.toml",
     }
@@ -107,6 +107,54 @@ def labels_for(prods, off_dir: Path) -> dict[str, dict[str, float]]:
     return out
 
 
+def merca_labels_for(prods, dir_: Path) -> dict[str, dict[str, float]]:
+    out = {}
+    for x in prods:
+        f = dir_ / f"{x.id}.json"
+        if f.exists():
+            out[str(x.id)] = etiqueta.parse_label(json.loads(f.read_text(encoding="utf-8")))
+    return out
+
+
+def cmd_etiquetas(args) -> None:
+    """Lee con Claude (tu suscripción, vía `claude -p`) la foto de la etiqueta de los productos del catálogo."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    p = paths()
+    m = read_mapping(p["mapping"])
+    ok = (m.revisado.astype(str).str.lower().isin(["sí", "si"])) & ~(m.excluir.astype(str).str.lower().isin(["sí", "si"]))
+    ids = list(dict.fromkeys(m.loc[ok, "mercadona_id"].astype(str)))
+    todo = [i for i in ids if not (p["etiquetas"] / f"{i}.json").exists()]
+    if args.limit:
+        todo = todo[:args.limit]
+    print(f"{len(ids)} productos en el catálogo; leyendo {len(todo)} con {args.workers} en paralelo…", flush=True)
+    s = requests.Session()
+
+    def one(pid):
+        f = p["merca"] / f"product_{pid}.json"
+        detail = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+        return pid, etiqueta.read_label(pid, detail, p["etiquetas"], session=s, model=args.model)
+
+    hechos = fallos = sin_foto = 0
+    coste = 0.0
+    with ThreadPoolExecutor(args.workers) as ex:
+        futs = [ex.submit(one, i) for i in todo]
+        for fut in as_completed(futs):
+            try:
+                pid, d = fut.result()
+            except Exception as e:  # noqa: BLE001 — un fallo no para el resto; se reintenta en la próxima ejecución
+                fallos += 1
+                print(f"  fallo: {e}", flush=True)
+                continue
+            if d is None:
+                sin_foto += 1
+            else:
+                hechos += 1
+                coste += d.get("coste_usd") or 0
+            if (hechos + fallos + sin_foto) % 25 == 0:
+                print(f"  {hechos + fallos + sin_foto}/{len(todo)} (coste equivalente {coste:.2f} $)", flush=True)
+    print(f"Leídas: {hechos} · sin foto trasera: {sin_foto} · fallos: {fallos} · coste equivalente: {coste:.2f} $")
+
+
 def reparse_bedca(p) -> None:
     foods = [bedca.parse_food(f.read_text(encoding="utf-8")) for f in sorted(p["bedca"].glob("f_*.xml"))]
     bedca.foods_frame([f for f in foods if f is not None]).to_parquet(p["bedca_frame"])
@@ -117,7 +165,7 @@ def cmd_build(args) -> None:
     reparse_bedca(p)
     prods = load_products(p)
     cat, rep = build_catalog(prods, pd.read_parquet(p["bedca_frame"]), read_mapping(p["mapping"]),
-                             labels_for(prods, p["off"]))
+                             labels_for(prods, p["off"]), merca_labels_for(prods, p["etiquetas"]))
     cat.to_parquet(p["catalog"])
     print(rep.texto())
     print(f"→ {p['catalog']}")
@@ -142,6 +190,11 @@ def main(argv=None) -> None:
     f.add_argument("--delay", type=float, default=1.0)
     f.set_defaults(fn=cmd_fetch)
     sub.add_parser("propose", help="propone emparejamientos en data/mapping.csv").set_defaults(fn=cmd_propose)
+    e = sub.add_parser("etiquetas", help="lee con Claude (suscripción) la foto de la etiqueta de Mercadona")
+    e.add_argument("--workers", type=int, default=4)
+    e.add_argument("--limit", type=int, default=0, help="como mucho N productos (0 = todos)")
+    e.add_argument("--model", default="haiku")
+    e.set_defaults(fn=cmd_etiquetas)
     sub.add_parser("build", help="construye data/catalog.parquet").set_defaults(fn=cmd_build)
     sub.add_parser("census", help="componentes BEDCA sin mapear").set_defaults(fn=cmd_census)
     args = ap.parse_args(argv)
