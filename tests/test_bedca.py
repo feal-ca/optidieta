@@ -98,3 +98,10 @@ def test_epa_dha_summed_in_mg():
 def test_epa_dha_one_known():
     assert parse_food(_xml((260, "0.2"))).valores["epa_dha_mg"] == pytest.approx(200.0)
     assert parse_food(_xml((53, "10"))).valores["epa_dha_mg"] is None
+
+
+def test_list_skips_entries_without_id(tmp_path):
+    (tmp_path / "list.xml").write_text(
+        '<?xml version="1.0" encoding="utf-8"?><foodresponse><food><f_id>2</f_id><f_ori_name>Ajo</f_ori_name></food>'
+        "<food><f_ori_name>Sin id</f_ori_name></food><food><f_id> </f_id></food></foodresponse>", encoding="utf-8")
+    assert fetch_food_list(tmp_path) == [(2, "Ajo")]

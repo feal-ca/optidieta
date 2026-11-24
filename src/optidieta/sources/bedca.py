@@ -59,8 +59,9 @@ def fetch_food_list(cache_dir: Path, session=None) -> list[tuple[int, str]]:
         write_atomic(path, text)
     seen: dict[int, str] = {}
     for food in ET.fromstring(text).iter("food"):
-        fid = int(food.findtext("f_id"))
-        seen.setdefault(fid, (food.findtext("f_ori_name") or "").strip())
+        fid = (food.findtext("f_id") or "").strip()
+        if fid.isdigit():  # entradas sin id no se pueden pedir
+            seen.setdefault(int(fid), (food.findtext("f_ori_name") or "").strip())
     return list(seen.items())
 
 
@@ -94,7 +95,8 @@ def parse_food(xml: str) -> BedcaFood | None:
     """None si BEDCA devuelve el alimento vacío (pasa con algunos ids de la lista)."""
     root = ET.fromstring(xml)
     food = root.find("food")
-    if food is None or not (food.findtext("f_id") or "").strip():
+    f_id = (food.findtext("f_id") or "").strip() if food is not None else ""
+    if food is None or not f_id:
         return None
     valores: dict[str, float | None] = {n.key: None for n in NUTRIENTS}
     sin_mapear: list[str] = []
@@ -113,18 +115,19 @@ def parse_food(xml: str) -> BedcaFood | None:
             if nut.key == "energia_kcal" and unit.lower() == "kj":
                 v = v / 4.184
             v *= nut.bedca_factor
-        if nut.bedca_sum and v is not None and valores.get(nut.key) is not None:
-            valores[nut.key] += v
-        elif valores.get(nut.key) is None:
+        prev = valores.get(nut.key)
+        if nut.bedca_sum and v is not None and prev is not None:
+            valores[nut.key] = prev + v
+        elif prev is None:
             valores[nut.key] = v
 
     if valores["energia_kcal"] is None:
         p, c, g = valores["proteina_g"], valores["hidratos_g"], valores["grasa_g"]
-        if None not in (p, c, g):
+        if p is not None and c is not None and g is not None:
             valores["energia_kcal"] = 4 * p + 4 * c + 9 * g + 2 * (valores["fibra_g"] or 0.0)
 
     return BedcaFood(
-        f_id=int(food.findtext("f_id")),
+        f_id=int(f_id),
         nombre=(food.findtext("f_ori_name") or "").strip(),
         porcion_comestible=_num(food.findtext("edible_portion")),
         valores=valores,
