@@ -1,6 +1,6 @@
 // Gráfico de rangos: banda sana EFSA por nutriente y un punto (la dieta) que se arrastra para forzar un objetivo.
-// data = {axis_max, rows: [...]} (ver optidieta.rangos.nutrient_rows). Al soltar: trigger "move" {key, pct};
-// doble clic en el nombre: trigger "reset" {key}.
+// data = {axis_max, rows: [...], selected, picked} (ver optidieta.rangos.nutrient_rows). Al soltar: trigger "move"
+// {key, pct, from}; doble clic en el nombre: "reset" {key}; clic en el nombre: "pick" {key}.
 
 const fmt = (v) =>
   v.toLocaleString("es-ES", { maximumFractionDigits: Math.abs(v) >= 100 ? 0 : Math.abs(v) >= 1 ? 1 : 2 });

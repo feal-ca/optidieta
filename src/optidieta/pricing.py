@@ -1,7 +1,7 @@
 from optidieta.sources.mercadona import MercaProduct
 from optidieta.textutil import norm
 
-HUEVO_G = 60
+HUEVO_G = 60  # gramos por huevo
 
 
 def price_per_100g(p: MercaProduct, porcion_comestible: float | None, g_por_unidad: float | None,

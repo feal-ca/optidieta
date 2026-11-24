@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from rapidfuzz import fuzz, process
 
+from optidieta.pricing import HUEVO_G
 from optidieta.sources.mercadona import MercaProduct
 from optidieta.textutil import norm
 
@@ -15,8 +16,6 @@ COLUMNS = ["mercadona_id", "nombre", "bedca_id", "bedca_nombre", "confianza", "r
 MARCAS = ["hacendado", "deliplus", "bosque verde", "compy", "mercadona"]
 COCINADO = ("hervid", "cocid", "frit", "asad", "guisad", "en conserva", "en almibar")
 CRUDO = ("crud", "sec", "fresc")
-
-HUEVO_G = 60
 
 
 def default_unit_grams(p: MercaProduct) -> float | None:
