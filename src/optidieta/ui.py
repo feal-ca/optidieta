@@ -1,6 +1,6 @@
 import hashlib
 
-EDITOR_KEYS = ("portions", "objetivos", "catalogo")
+EDITOR_KEYS = ("portions", "objetivos", "catalogo", "vetos")
 
 
 def editor_key(base: str, ids) -> str:
