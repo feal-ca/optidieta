@@ -54,6 +54,20 @@ def _filter(foods: pd.DataFrame, excluded, diet: str) -> pd.DataFrame:
     return df.reset_index(drop=True)
 
 
+def _cheapest_format(df: pd.DataFrame, price: np.ndarray) -> tuple[pd.DataFrame, np.ndarray]:
+    """Productos que son el mismo alimento (mismo alimento BEDCA o, sin él, mismo nombre) cuentan como uno solo:
+    se queda el más barato. Si no, el LP reparte gramos entre formatos para saltarse el máximo por alimento.
+    """
+    if df.empty or "nombre" not in df:
+        return df, price
+    name = df["nombre"].astype(str).str.lower().str.split().str.join(" ")
+    if "bedca_nombre" in df:
+        b = df["bedca_nombre"]
+        name = ("b:" + b.astype(str)).where(b.notna() & (b.astype(str).str.strip() != ""), "n:" + name)
+    keep = pd.Series(price, index=df.index).groupby(name).idxmin().sort_values().to_numpy()
+    return df.loc[keep].reset_index(drop=True), price[keep]
+
+
 def _rows(df: pd.DataFrame, constraints: list[Constraint]):
     """Filas A_ub·x ≤ b_ub (x en gramos), con la clave y el límite de cada una."""
     per_g = {n.key: df[col(n.key)].fillna(0).to_numpy(float) / 100 for n in NUTRIENTS if col(n.key) in df}
@@ -103,11 +117,12 @@ def solve(foods: pd.DataFrame, constraints: list[Constraint], *, excluded: froze
           price_overrides: Mapping[str, float] = {}, max_g: float = 500.0,
           diet: Literal["omnivora", "vegetariana", "vegana"] = "omnivora") -> Solution:
     df = _filter(foods, excluded, diet)
-    n = len(df)
     price = df["precio_100g"].to_numpy(float).copy()
     for i, fid in enumerate(df["id"].astype(str)):
         if fid in price_overrides:
             price[i] = price_overrides[fid]
+    df, price = _cheapest_format(df, price)
+    n = len(df)
     cost = price / 100
     A, b, keys, lims = _rows(df, constraints)
 

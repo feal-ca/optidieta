@@ -120,3 +120,30 @@ def test_blocking_scales_pct_rows_by_energy():
                    C("vit_b12_ug", 4)], max_g=3000)
     assert not s.feasible
     assert s.blocking[0] == "vit_b12_ug"
+
+
+def _formats(price_a1, price_a2):
+    a1, a2 = food("A1", price_a1, proteina_g=10.0), food("A2", price_a2, proteina_g=10.0)
+    a1["nombre"] = a2["nombre"] = "Bebida de soja Hacendado"
+    return pd.DataFrame([a1, a2, food("B", 0.50, proteina_g=20.0)])
+
+
+def test_same_product_in_two_formats_shares_max_g():
+    s = solve(_formats(0.10, 0.12), [C("proteina_g", 30)], max_g=200)
+    g = {p.id: p.grams for p in s.portions}
+    assert set(g) == {"A1", "B"}  # sin el segundo formato para saltarse el tope
+    assert g["A1"] == pytest.approx(200) and g["B"] == pytest.approx(50)
+
+
+def test_format_choice_follows_price_overrides_and_vetoes():
+    df = _formats(0.10, 0.12)
+    assert [p.id for p in solve(df, [C("proteina_g", 10)], price_overrides={"A1": 0.20}).portions] == ["A2"]
+    assert [p.id for p in solve(df, [C("proteina_g", 10)], excluded=frozenset({"A1"})).portions] == ["A2"]
+
+
+def test_same_bedca_food_counts_as_one():
+    h1, h2 = food("H1", 0.10, proteina_g=12.5), food("H2", 0.12, proteina_g=12.5)
+    h1["nombre"], h2["nombre"] = "Huevos", "Huevos medianos M"
+    h1["bedca_nombre"] = h2["bedca_nombre"] = "Huevo de gallina"
+    s = solve(pd.DataFrame([h1, h2, food("B", 0.50, proteina_g=20.0)]), [C("proteina_g", 30)], max_g=200)
+    assert {p.id for p in s.portions} == {"H1", "B"}
