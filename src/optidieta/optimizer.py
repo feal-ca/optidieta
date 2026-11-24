@@ -1,7 +1,8 @@
 """Dieta de coste mínimo por programación lineal (scipy/HiGHS). Sin dependencias de interfaz."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Literal, Mapping
+from typing import Literal
 
 import numpy as np
 import pandas as pd

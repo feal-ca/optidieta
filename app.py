@@ -8,7 +8,6 @@ import pandas as pd
 import streamlit as st
 
 import optidieta
-
 from optidieta.catalog import load_catalog
 from optidieta.cli import paths
 from optidieta.mapping import read_mapping

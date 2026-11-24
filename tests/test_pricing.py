@@ -1,6 +1,6 @@
 import pytest
-from helpers import product
 
+from helpers import product
 from optidieta.pricing import price_per_100g
 
 

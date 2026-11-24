@@ -1,7 +1,7 @@
 """Datos del gráfico de rangos: cada nutriente en % de su referencia EFSA, y cómo un arrastre cambia el objetivo."""
 
 import math
-from typing import Mapping
+from collections.abc import Mapping
 
 from optidieta.nutrients import col
 from optidieta.optimizer import Solution

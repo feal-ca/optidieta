@@ -1,5 +1,4 @@
 from helpers import product
-
 from optidieta.diet import diet_flags
 
 

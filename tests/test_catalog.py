@@ -1,8 +1,8 @@
 import math
 
 import pandas as pd
-from helpers import product
 
+from helpers import product
 from optidieta.catalog import build_catalog
 from optidieta.nutrients import NUTRIENTS, col, known_col
 

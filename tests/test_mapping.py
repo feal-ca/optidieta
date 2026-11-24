@@ -1,6 +1,6 @@
 import pandas as pd
-from helpers import product
 
+from helpers import product
 from optidieta.mapping import COLUMNS, merge, propose, read_mapping, write_mapping
 
 

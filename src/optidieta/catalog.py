@@ -1,8 +1,8 @@
 """Une Mercadona (precio), BEDCA (nutrientes) y Open Food Facts (etiqueta) en el catálogo del optimizador."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Mapping
 
 import pandas as pd
 

@@ -81,6 +81,7 @@ def test_rows_show_edited_target():
 
 def test_food_contrib_abs_pct_energy_and_unknown():
     import math
+
     from optidieta.nutrients import col
     from optidieta.rangos import food_contrib
     food = {col("proteina_g"): 24.0, col("grasa_g"): 2.0, col("sodio_mg"): math.nan}
