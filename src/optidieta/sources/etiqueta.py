@@ -71,7 +71,8 @@ def _run_claude(cmd: list[str]) -> dict:
     return json.loads(r.stdout)
 
 
-def read_label(pid: str, detail: dict, cache_dir: Path, run=_run_claude, session=None, model: str = "haiku") -> dict | None:
+def read_label(pid: str, detail: dict, cache_dir: Path, run=_run_claude, session=None,
+               model: str = "haiku") -> dict | None:
     """Devuelve la salida estructurada de la etiqueta (o None si el producto no tiene foto trasera)."""
     cache = Path(cache_dir)
     cache.mkdir(parents=True, exist_ok=True)

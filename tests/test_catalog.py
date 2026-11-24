@@ -142,7 +142,8 @@ def test_canned_sardine_epa_from_raw_but_not_tuna():
                       bedca_row(4, epa_dha_mg=749.0)])
     b["bedca_nombre"] = ["Sardina, enlatada, en aceite, escurrida", "Sardina", "Atún en aceite de oliva isabel",
                          "Atún, crudo"]
-    m = pd.DataFrame([dict(mrow("1", veg="no", vegan="no"), bedca_id=1), dict(mrow("2", veg="no", vegan="no"), bedca_id=3)])
+    m = pd.DataFrame([dict(mrow("1", veg="no", vegan="no"), bedca_id=1),
+                      dict(mrow("2", veg="no", vegan="no"), bedca_id=3)])
     cat, _ = build_catalog([product(id="1"), product(id="2")], b, m, {})
     s, t = cat.set_index("id").loc["1"], cat.set_index("id").loc["2"]
     assert s[col("epa_dha_mg")] == 930.0 and "epa_dha_mg" in s["estimados"]

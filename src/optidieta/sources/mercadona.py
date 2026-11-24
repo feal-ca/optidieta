@@ -108,7 +108,8 @@ def clear_listings(cache_dir: Path) -> None:
         f.unlink()
 
 
-def fetch_all(cache_dir: Path, include: set[int], session=None, delay: float = 1.0, progress=None) -> list[MercaProduct]:
+def fetch_all(cache_dir: Path, include: set[int], session=None, delay: float = 1.0,
+              progress=None) -> list[MercaProduct]:
     cache = Path(cache_dir)
     cache.mkdir(parents=True, exist_ok=True)
     session = session or requests.Session()

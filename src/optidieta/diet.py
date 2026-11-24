@@ -11,7 +11,8 @@ NO_VEGANO = ["leche", "lacteo", "nata", "mantequilla", "queso", "yogur", "huevo"
 CAT_CARNE_PESCADO = {"carne", "marisco y pescado"}
 CAT_LACTEOS = "huevos, leche y mantequilla"
 
-_TRAZAS = re.compile(r"(libre de|sin |puede contener trazas? de|trazas de|elaborado en .*? que (tambien )?(utiliza|elabora|manipula))[^.]*\.?")
+_TRAZAS = re.compile(r"(libre de|sin |puede contener trazas? de|trazas de"
+                     r"|elaborado en .*? que (tambien )?(utiliza|elabora|manipula))[^.]*\.?")
 
 
 def _has(text: str, words: list[str]) -> bool:

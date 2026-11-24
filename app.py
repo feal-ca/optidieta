@@ -50,7 +50,8 @@ def num(x: float, d: int = 1) -> str:
 if not P["catalog"].exists():
     st.title("Optidieta")
     st.info("Todavía no hay catálogo. Desde la carpeta del proyecto, ejecuta:\n\n"
-            "```\nuv run optidieta fetch\nuv run optidieta propose\n# revisa data/mapping.csv\nuv run optidieta build\n```")
+            "```\nuv run optidieta fetch\nuv run optidieta propose\n# revisa data/mapping.csv\n"
+            "uv run optidieta build\n```")
     st.stop()
 
 
@@ -132,7 +133,8 @@ with st.sidebar:
             set_edit(c.key, e)
             save_and_rerun()
 
-    vet = st.multiselect("Productos que no quiero", options=sorted(names, key=lambda i: names[i]), default=sorted(S.excluded),
+    vet = st.multiselect("Productos que no quiero", options=sorted(names, key=lambda i: names[i]),
+                         default=sorted(S.excluded),
                          format_func=lambda i: names.get(i, i), placeholder="Busca un producto…",
                          key=editor_key("vetos", sorted(S.excluded)))
     if set(vet) != S.excluded:
@@ -188,7 +190,8 @@ else:
                      max_g=S.max_g, diet="omnivora")
         st.caption(f"Este precio no incluye el mínimo de {', '.join(c.label for c in apagados)}, que sin pescado solo "
                    "se cubre con un suplemento (p. ej. de algas)."
-                   + (f" Con los mismos objetivos, la omnívora costaría {eur(omni.cost_day)}." if omni.feasible else ""))
+                   + (f" Con los mismos objetivos, la omnívora costaría {eur(omni.cost_day)}."
+                      if omni.feasible else ""))
     if d and (d.added or d.removed):
         st.caption(" · ".join(filter(None, [
             ("Entra: " + ", ".join(names.get(i, i) for i in d.added)) if d.added else "",
@@ -209,7 +212,8 @@ else:
                                "€/día": st.column_config.NumberColumn(format="%.2f €")},
                 key=editor_key("portions", por.id))
             grams = {p.id: p.grams for p in sol.portions}
-            selected = [(por.id.iloc[i], por.Producto.iloc[i], grams[por.id.iloc[i]]) for i in (ev.selection.rows if ev else [])]
+            selected = [(por.id.iloc[i], por.Producto.iloc[i], grams[por.id.iloc[i]])
+                        for i in (ev.selection.rows if ev else [])]
             if selected:
                 quitar = (f"«{selected[0][1]}»" if len(selected) == 1 else f"los {len(selected)} alimentos elegidos")
                 if st.button(f"Quitar {quitar} de la dieta", icon="🚫"):
@@ -252,10 +256,11 @@ else:
 # ---------- nutrientes: rango sano y punto arrastrable ----------
 st.subheader("Nutrientes")
 st.caption("La banda verde es el rango sano EFSA para tu perfil; el punto negro, dónde te deja esta dieta (en % de la "
-           "referencia). **Arrastra el punto** para pedir más o menos de un nutriente: a la derecha fija un mínimo, a la "
-           "izquierda un máximo. La raya negra bajo la banda es tu objetivo; doble clic en el nombre (en negrita) lo "
-           "devuelve a EFSA. Un clic en el nombre muestra arriba qué alimentos lo aportan. ⚠ = falta el dato en parte de los alimentos (cuenta como 0). ≈ = parte del dato es una "
-           "estimación por subcategoría (azúcares, grasa saturada o grasa de fruta y verdura).")
+           "referencia). **Arrastra el punto** para pedir más o menos de un nutriente: a la derecha fija un mínimo, "
+           "a la izquierda un máximo. La raya negra bajo la banda es tu objetivo; doble clic en el nombre (en "
+           "negrita) lo devuelve a EFSA. Un clic en el nombre muestra arriba qué alimentos lo aportan. ⚠ = falta el "
+           "dato en parte de los alimentos (cuenta como 0). ≈ = parte del dato es una estimación por subcategoría "
+           "(azúcares, grasa saturada o grasa de fruta y verdura).")
 contrib: dict[str, float | None] | None = None
 contrib_partial: set[str] = set()
 if selected:
@@ -304,7 +309,8 @@ with st.expander("Tabla de nutrientes"):
 with st.expander("Editar objetivos"):
     st.caption("Valores de referencia EFSA para tu perfil. Los % E son porcentaje de la energía total.")
     odf = pd.DataFrame([{"key": c.key, "Activo": c.active, "Nutriente": c.label, "Unidad": c.unit,
-                         "Mínimo": to_display(c, c.min), "Máximo": to_display(c, c.max), "Fuente": c.fuente} for c in constraints])
+                         "Mínimo": to_display(c, c.min), "Máximo": to_display(c, c.max), "Fuente": c.fuente}
+                        for c in constraints])
     okey = editor_key("objetivos", [json.dumps(S.constraint_edits, sort_keys=True)])
     oed = st.data_editor(odf, hide_index=True, use_container_width=True, disabled=["Nutriente", "Unidad", "Fuente"],
                          column_config={"key": None}, key=okey)

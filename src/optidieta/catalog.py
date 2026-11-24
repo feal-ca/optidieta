@@ -31,7 +31,8 @@ class BuildReport:
         return (f"Incluidos: {self.incluidos}\nSin revisar (fuera): {self.sin_revisar}\n"
                 f"Con etiqueta de la foto de Mercadona: {self.con_etiqueta_mercadona}\n"
                 f"Con etiqueta Open Food Facts: {self.con_etiqueta}\n"
-                f"Etiqueta descartada (kcal incoherentes): {len(self.etiqueta_descartada)} {self.etiqueta_descartada[:20]}\n"
+                f"Etiqueta descartada (kcal incoherentes): {len(self.etiqueta_descartada)} "
+                f"{self.etiqueta_descartada[:20]}\n"
                 f"Desaparecidos de Mercadona: {len(self.desaparecidos)} {self.desaparecidos[:20]}\n"
                 f"Sin precio calculable: {len(self.sin_precio)} {self.sin_precio[:20]}\n"
                 f"Sin alimento BEDCA válido: {len(self.sin_bedca)} {self.sin_bedca[:20]}\n"
@@ -137,7 +138,8 @@ def build_catalog(products: list[MercaProduct], bedca: pd.DataFrame, mapping: pd
         rows.append(row)
     rep.incluidos = len(rows)
     cols = ["id", "nombre", "categoria", "subcategoria", "url", "precio_100g", "vegetariano", "vegano",
-            "bedca_nombre", "fuente_etiqueta", "estimados"] + [c for n in NUTRIENTS for c in (col(n.key), known_col(n.key))]
+            "bedca_nombre", "fuente_etiqueta", "estimados",
+            *[c for n in NUTRIENTS for c in (col(n.key), known_col(n.key))]]
     return fill_estimates(pd.DataFrame(rows, columns=cols)), rep
 
 
