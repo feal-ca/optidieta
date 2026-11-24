@@ -1,10 +1,9 @@
-"""optidieta fetch | propose | build | census"""
+"""optidieta fetch | propose | etiquetas | build | census"""
 
 import argparse
 import collections
 import json
 import os
-import sys
 from dataclasses import asdict
 from pathlib import Path
 
@@ -26,7 +25,8 @@ def paths() -> dict[str, Path]:
     d = data_dir()
     return {
         "data": d, "raw": d / "raw", "merca": d / "raw" / "mercadona", "bedca": d / "raw" / "bedca",
-        "off": d / "raw" / "off", "etiquetas": d / "raw" / "etiquetas", "products": d / "raw" / "products.json", "bedca_frame": d / "raw" / "bedca.parquet",
+        "off": d / "raw" / "off", "etiquetas": d / "raw" / "etiquetas", "products": d / "raw" / "products.json",
+        "bedca_frame": d / "raw" / "bedca.parquet",
         "mapping": d / "mapping.csv", "catalog": d / "catalog.parquet",
         "subcats": ROOT / "config" / "subcategorias.toml",
     }
@@ -121,29 +121,28 @@ def cmd_etiquetas(args) -> None:
     from concurrent.futures import ThreadPoolExecutor, as_completed
     p = paths()
     m = read_mapping(p["mapping"])
-    ok = (m.revisado.astype(str).str.lower().isin(["sí", "si"])) & ~(m.excluir.astype(str).str.lower().isin(["sí", "si"]))
+    ok = (m.revisado == "sí") & (m.excluir != "sí")  # read_mapping ya normaliza "si" → "sí"
     ids = list(dict.fromkeys(m.loc[ok, "mercadona_id"].astype(str)))
     todo = [i for i in ids if not (p["etiquetas"] / f"{i}.json").exists()]
     if args.limit:
         todo = todo[:args.limit]
     print(f"{len(ids)} productos en el catálogo; leyendo {len(todo)} con {args.workers} en paralelo…", flush=True)
-    s = requests.Session()
 
-    def one(pid):
+    def one(pid):  # sin Session compartida: requests no garantiza que sea segura entre hilos
         f = p["merca"] / f"product_{pid}.json"
         detail = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
-        return pid, etiqueta.read_label(pid, detail, p["etiquetas"], session=s, model=args.model)
+        return etiqueta.read_label(pid, detail, p["etiquetas"], model=args.model)
 
     hechos = fallos = sin_foto = 0
     coste = 0.0
     with ThreadPoolExecutor(args.workers) as ex:
-        futs = [ex.submit(one, i) for i in todo]
+        futs = {ex.submit(one, i): i for i in todo}
         for fut in as_completed(futs):
             try:
-                pid, d = fut.result()
-            except Exception as e:  # noqa: BLE001 — un fallo no para el resto; se reintenta en la próxima ejecución
+                d = fut.result()
+            except Exception as e:  # un fallo no para el resto; se reintenta en la próxima ejecución
                 fallos += 1
-                print(f"  fallo: {e}", flush=True)
+                print(f"  fallo en {futs[fut]}: {e}", flush=True)
                 continue
             if d is None:
                 sin_foto += 1
@@ -173,7 +172,7 @@ def cmd_build(args) -> None:
 
 def cmd_census(args) -> None:
     p = paths()
-    c = collections.Counter()
+    c: collections.Counter[str] = collections.Counter()
     for f in p["bedca"].glob("f_*.xml"):
         food = bedca.parse_food(f.read_text(encoding="utf-8"))
         if food is not None:
@@ -202,4 +201,4 @@ def main(argv=None) -> None:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
