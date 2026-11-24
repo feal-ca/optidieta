@@ -71,3 +71,14 @@ def default_constraints(p: Profile, path: Path = DEFAULT_PATH) -> list[Constrain
             kind=kind, kcal_por_g=s.get("kcal_por_g"), fuente=s.get("fuente", ""),
         ))
     return out
+
+
+SIN_PESCADO = {"epa_dha_mg"}  # objetivos que solo se pueden cumplir con pescado (o suplemento)
+
+
+def for_diet(cs: list[Constraint], diet: str) -> list[Constraint]:
+    """En vegetariana y vegana, los objetivos que exigen pescado vienen desactivados (se pueden activar a mano)."""
+    from dataclasses import replace
+    if diet == "omnivora":
+        return list(cs)
+    return [replace(c, active=False) if c.key in SIN_PESCADO else c for c in cs]

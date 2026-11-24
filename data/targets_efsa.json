@@ -16,6 +16,7 @@
     "grasa_sat_g": {"kind": "pct_energia", "kcal_por_g": 9, "max": 0.10, "fuente": "OMS < 10 % E"},
     "azucares_g": {"kind": "pct_energia", "kcal_por_g": 4, "max": 0.10, "active": false, "fuente": "OMS < 10 % E (azúcares libres)"},
     "fibra_g": {"min": 25, "fuente": "EFSA AI"},
+    "epa_dha_mg": {"min": 250, "fuente": "EFSA AI 2010 (EPA+DHA, salud cardiovascular)"},
     "sodio_mg": {"max": 2000, "fuente": "EFSA ingesta segura y adecuada"},
     "cloruro_mg": {"max": 3100, "fuente": "EFSA ingesta segura y adecuada"},
     "potasio_mg": {"min": 3500, "fuente": "EFSA AI"},

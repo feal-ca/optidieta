@@ -114,7 +114,11 @@ def parse_food(xml: str) -> BedcaFood | None:
             if nut.key == "energia_kcal" and unit.lower() == "kj":
                 v = v / 4.184
             # cobre llega como "ug" con valores que son mg (error conocido de BEDCA): se toma tal cual en mg
-        if valores.get(nut.key) is None:
+        if v is not None:
+            v *= nut.bedca_factor
+        if nut.bedca_sum and v is not None and valores.get(nut.key) is not None:
+            valores[nut.key] += v
+        elif valores.get(nut.key) is None:
             valores[nut.key] = v
 
     if valores["energia_kcal"] is None:

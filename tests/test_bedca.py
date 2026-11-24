@@ -81,3 +81,20 @@ def test_sugars_mapped_by_name():
            '<foodvalue><c_id>4321</c_id><c_ori_name>azucares, totales</c_ori_name><best_location>12.5</best_location>'
            '<v_unit>g</v_unit></foodvalue></food></foodresponse>')
     assert parse_food(xml).valores["azucares_g"] == 12.5
+
+
+def _xml(*vals):
+    fv = "".join(f"<foodvalue><c_id>{c}</c_id><c_ori_name>x</c_ori_name><best_location>{v}</best_location>"
+                 f"<v_unit>g</v_unit></foodvalue>" for c, v in vals)
+    return (f'<?xml version="1.0" encoding="utf-8"?><foodresponse><food><f_id>9</f_id><f_ori_name>Sardina</f_ori_name>'
+            f"<edible_portion>1</edible_portion>{fv}</food></foodresponse>")
+
+
+def test_epa_dha_summed_in_mg():
+    f = parse_food(_xml((231, "0.5"), (260, "0.8")))
+    assert f.valores["epa_dha_mg"] == pytest.approx(1300.0)
+
+
+def test_epa_dha_one_known():
+    assert parse_food(_xml((260, "0.2"))).valores["epa_dha_mg"] == pytest.approx(200.0)
+    assert parse_food(_xml((53, "10"))).valores["epa_dha_mg"] is None

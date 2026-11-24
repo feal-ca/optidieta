@@ -12,6 +12,8 @@ class Nutrient:
     bedca_names: tuple[str, ...] = ()
     off_field: str | None = None
     off_factor: float = 1.0
+    bedca_factor: float = 1.0  # unidad de BEDCA → unidad interna
+    bedca_sum: bool = False  # suma los bedca_ids en vez de quedarse con el primero
 
 
 N = Nutrient
@@ -47,6 +49,8 @@ NUTRIENTS: list[Nutrient] = [
     N("vit_c_mg", "Vitamina C", "mg", (486,)),
     N("folato_ug", "Folato", "µg", (487,), ("folato, total",)),
     N("colesterol_mg", "Colesterol", "mg", (433,)),
+    # EPA (c_id 231) + DHA (c_id 260), que BEDCA da en g/100 g
+    N("epa_dha_mg", "Omega-3 EPA+DHA", "mg", (231, 260), bedca_factor=1000, bedca_sum=True),
 ]
 del N
 

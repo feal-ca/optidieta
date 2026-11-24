@@ -55,3 +55,12 @@ def test_sugar_inactive_by_default():
 
 def test_every_constraint_has_source():
     assert all(c.fuente for c in default_constraints(Profile("m", 40)))
+
+
+def test_for_diet_turns_off_fish_only_targets():
+    from optidieta.targets import Profile, default_constraints, for_diet
+    cs = default_constraints(Profile("h", 30, 70.0))
+    on = {c.key: c.active for c in for_diet(cs, "omnivora")}
+    veg = {c.key: c.active for c in for_diet(cs, "vegetariana")}
+    assert on["epa_dha_mg"] and not veg["epa_dha_mg"]
+    assert veg["proteina_g"]
