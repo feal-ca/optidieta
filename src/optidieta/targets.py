@@ -1,7 +1,7 @@
 """Objetivos nutricionales por perfil (EFSA), leídos de data/targets_efsa.json."""
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Literal
 
@@ -9,6 +9,9 @@ from optidieta.nutrients import BY_KEY
 
 DEFAULT_PATH = Path(__file__).resolve().parents[2] / "data" / "targets_efsa.json"
 KCAL_POR_MJ = 239.006
+
+Diet = Literal["omnivora", "vegetariana", "vegana"]
+DIETS: tuple[Diet, ...] = ("omnivora", "vegetariana", "vegana")
 
 
 @dataclass
@@ -78,7 +81,6 @@ def apply_margin(cs: list[Constraint], margin: float) -> list[Constraint]:
 
     Si el margen cruzara mínimo y máximo, el objetivo se deja como está.
     """
-    from dataclasses import replace
     if margin <= 0:
         return list(cs)
     out = []
@@ -97,7 +99,6 @@ SIN_PESCADO = {"epa_dha_mg"}  # objetivos que solo se pueden cumplir con pescado
 
 def for_diet(cs: list[Constraint], diet: str) -> list[Constraint]:
     """En vegetariana y vegana, los objetivos que exigen pescado vienen desactivados (se pueden activar a mano)."""
-    from dataclasses import replace
     if diet == "omnivora":
         return list(cs)
     return [replace(c, active=False) if c.key in SIN_PESCADO else c for c in cs]

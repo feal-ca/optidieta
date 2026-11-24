@@ -2,14 +2,13 @@
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Literal
 
 import numpy as np
 import pandas as pd
 from scipy.optimize import linprog
 
 from optidieta.nutrients import NUTRIENTS, col, known_col
-from optidieta.targets import Constraint
+from optidieta.targets import Constraint, Diet
 
 MIN_GRAMS = 1.0
 PENALTY = 1e3
@@ -72,9 +71,19 @@ def _cheapest_format(df: pd.DataFrame, price: np.ndarray) -> tuple[pd.DataFrame,
 def _rows(df: pd.DataFrame, constraints: list[Constraint]):
     """Filas A_ub·x ≤ b_ub (x en gramos), con la clave y el límite de cada una."""
     per_g = {n.key: df[col(n.key)].fillna(0).to_numpy(float) / 100 for n in NUTRIENTS if col(n.key) in df}
-    A, b, keys, lims = [], [], [], []
+    A: list[np.ndarray] = []
+    b: list[float] = []
+    keys: list[str] = []
+    lims: list[float] = []
+
+    def add(row: np.ndarray, bound: float, key: str, lim: float) -> None:
+        A.append(row)
+        b.append(bound)
+        keys.append(key)
+        lims.append(max(lim, 1.0))
+
     e_target = next((c.min or c.max for c in constraints if c.key == "energia_kcal" and c.active
-                     and (c.min or c.max)), 2000.0)
+                     and (c.min or c.max)), None) or 2000.0
     for c in constraints:
         if not c.active or c.key not in per_g:
             continue
@@ -84,14 +93,14 @@ def _rows(df: pd.DataFrame, constraints: list[Constraint]):
                 continue
             fac, e = (c.kcal_por_g or 0), per_g["energia_kcal"]
             if c.min is not None:  # fac·n ≥ min·E  →  min·E − fac·n ≤ 0
-                A.append(c.min * e - fac * a); b.append(0.0); keys.append(c.key); lims.append(max(c.min * e_target, 1.0))
+                add(c.min * e - fac * a, 0.0, c.key, c.min * e_target)
             if c.max is not None:
-                A.append(fac * a - c.max * e); b.append(0.0); keys.append(c.key); lims.append(max(c.max * e_target, 1.0))
+                add(fac * a - c.max * e, 0.0, c.key, c.max * e_target)
         else:
             if c.min is not None:
-                A.append(-a); b.append(-c.min); keys.append(c.key); lims.append(max(abs(c.min), 1.0))
+                add(-a, -c.min, c.key, abs(c.min))
             if c.max is not None:
-                A.append(a); b.append(c.max); keys.append(c.key); lims.append(max(abs(c.max), 1.0))
+                add(a, c.max, c.key, abs(c.max))
     return A, b, keys, lims
 
 
@@ -108,7 +117,7 @@ def _blocking(cost, A, b, keys, lims, max_g, n) -> list[str]:
         return sorted(set(keys))
     slack = r.x[n:]
     worst: dict[str, float] = {}
-    for k, s in zip(keys, slack):
+    for k, s in zip(keys, slack, strict=True):
         if s > 1e-6:
             worst[k] = max(worst.get(k, 0.0), s)
     return sorted(worst, key=lambda k: -worst[k])
@@ -116,7 +125,7 @@ def _blocking(cost, A, b, keys, lims, max_g, n) -> list[str]:
 
 def solve(foods: pd.DataFrame, constraints: list[Constraint], *, excluded: frozenset[str] = frozenset(),
           price_overrides: Mapping[str, float] = {}, max_g: float = 500.0,
-          diet: Literal["omnivora", "vegetariana", "vegana"] = "omnivora") -> Solution:
+          diet: Diet = "omnivora") -> Solution:
     df = _filter(foods, excluded, diet)
     price = df["precio_100g"].to_numpy(float).copy()
     for i, fid in enumerate(df["id"].astype(str)):

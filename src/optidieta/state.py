@@ -5,9 +5,8 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from optidieta.fsutil import write_atomic
-from optidieta.targets import Constraint, Profile
+from optidieta.targets import DIETS, Constraint, Diet, Profile
 
-DIETS = ("omnivora", "vegetariana", "vegana")
 # Rangos de los widgets de la app: un valor guardado fuera de ellos haría fallar a Streamlit al crearlos
 EDAD = (18, 99)
 PESO_KG = (30.0, 200.0)
@@ -22,7 +21,7 @@ def _clamp(v: float, bounds: tuple[float, float]) -> float:
 @dataclass
 class UserState:
     profile: Profile
-    diet: str = "omnivora"
+    diet: Diet = "omnivora"
     excluded: set[str] = field(default_factory=set)
     price_overrides: dict[str, float] = field(default_factory=dict)
     constraint_edits: dict[str, dict] = field(default_factory=dict)
