@@ -148,7 +148,7 @@ R = [
     ((121,), r"lenteja", "Lenteja, seca, cruda", {}),
     ((121,), r"garbanzo cocido", "Garbanzo, en conserva", {}),
     ((121,), r"garbanzo", "Garbanzo, seco, crudo", {}),
-    ((121,), r"alubia cocida", "Judías blancas, cocidas", {}),
+    ((121,), r"alubia cocida", "Alubia blanca, en conserva", {}),
     ((121,), r"alubia (blanca|granja)", "Judía blanca", {}),
     ((121,), r"alubia", "Judía pinta", {}),
     ((121,), r"soja texturizada", "Soja, seca, cruda", {}),

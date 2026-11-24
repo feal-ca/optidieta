@@ -747,12 +747,12 @@ mercadona_id;nombre;bedca_id;bedca_nombre;confianza;revisado;excluir;porcion_com
 25460;Pechugas enteras de pollo certificado alimentado con un 50% de maíz;260;Pollo, pechuga, con piel, crudo;100;sí;no;1.0;;;
 25461;Jamoncitos de pollo certificado alimentado con un 50% de maíz;993;Pollo, muslo, con piel, crudo;100;sí;no;0.75;;;
 25972;Medio conejo troceado;1162;Conejo de granja, carne, cruda;100;sí;no;0.75;;;
-26000;Alubia cocida roja Hacendado;2006;Judías blancas, cocidas;100;sí;no;1.0;;;
-26001;Alubia cocida pinta Hacendado;2006;Judías blancas, cocidas;100;sí;no;1.0;;;
-26002;Alubia cocida granja Hacendado;2006;Judías blancas, cocidas;100;sí;no;1.0;;;
+26000;Alubia cocida roja Hacendado;898;Alubia blanca, en conserva;100;sí;no;1.0;;;
+26001;Alubia cocida pinta Hacendado;898;Alubia blanca, en conserva;100;sí;no;1.0;;;
+26002;Alubia cocida granja Hacendado;898;Alubia blanca, en conserva;100;sí;no;1.0;;;
 26011;Lenteja cocida Hacendado;1126;Lenteja, en conserva;100;sí;no;1.0;;;
-26019;Alubia cocida blanca Hacendado;2006;Judías blancas, cocidas;100;sí;no;1.0;;;
-26028;Alubia cocida blanca Hacendado;2006;Judías blancas, cocidas;100;sí;no;1.0;;;
+26019;Alubia cocida blanca Hacendado;898;Alubia blanca, en conserva;100;sí;no;1.0;;;
+26028;Alubia cocida blanca Hacendado;898;Alubia blanca, en conserva;100;sí;no;1.0;;;
 26029;Garbanzo cocido Hacendado;1292;Garbanzo, en conserva;100;sí;no;1.0;;;
 26030;Lenteja cocida Hacendado;1126;Lenteja, en conserva;100;sí;no;1.0;;;
 26033;Garbanzo cocido Pedrosillano Hacendado;1292;Garbanzo, en conserva;100;sí;no;1.0;;;
