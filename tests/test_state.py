@@ -26,3 +26,14 @@ def test_apply_edits():
     assert out["vit_b12_ug"].active is False
     assert out["hierro_mg"].min == 14
     assert {c.key: c for c in base}["hierro_mg"].min == 11  # no muta la base
+
+
+def test_state_out_of_range_values_fall_back_per_field(tmp_path):
+    # la app crea sus widgets con estos valores: uno fuera de rango o desconocido la tiraría al arrancar
+    f = tmp_path / "e.json"
+    f.write_text('{"profile": {"sexo": "x", "edad": 12, "peso_kg": 500}, "diet": "carnivora", '
+                 '"excluded": ["7"], "max_g": 5000, "margen": 2}', encoding="utf-8")
+    s = load_state(f)
+    assert s.profile == Profile("h", 18, 200.0)
+    assert s.diet == "omnivora" and s.excluded == {"7"}
+    assert s.max_g == 1500.0 and s.margen == 0.3  # el deslizador llega al 30 %

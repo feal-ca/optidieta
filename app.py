@@ -14,7 +14,7 @@ from optidieta.mapping import read_mapping
 from optidieta.nutrients import BY_KEY, col
 from optidieta.optimizer import compare, solve
 from optidieta.rangos import AXIS_MAX, combine_contrib, drag_edit, food_contrib, nutrient_rows, range_text, reference
-from optidieta.state import UserState, apply_edits, load_state, save_state
+from optidieta.state import EDAD, MARGEN, MAX_G, PESO_KG, UserState, apply_edits, load_state, save_state
 from optidieta.targets import SIN_PESCADO, Profile, apply_margin, default_constraints, for_diet
 from optidieta.ui import editor_key, reset_editors
 
@@ -89,12 +89,13 @@ with st.sidebar:
     sexo = st.radio("Sexo", ["h", "m"], format_func={"h": "Hombre", "m": "Mujer"}.get,
                     index=["h", "m"].index(S.profile.sexo), horizontal=True)
     c1, c2 = st.columns(2)
-    edad = c1.number_input("Edad", 18, 99, S.profile.edad)
-    peso = c2.number_input("Peso (kg)", 30.0, 200.0, float(S.profile.peso_kg), step=1.0)
+    edad = c1.number_input("Edad", *EDAD, S.profile.edad)
+    peso = c2.number_input("Peso (kg)", *PESO_KG, float(S.profile.peso_kg), step=1.0)
 
     st.header("Requisitos extra")
-    max_g = st.slider("Máximo por alimento (g/día)", 100, 1500, int(S.max_g), step=50)
-    margen = st.slider("Margen de seguridad", 0, 30, int(round(S.margen * 100)), step=5, format="%d %%",
+    max_g = st.slider("Máximo por alimento (g/día)", int(MAX_G[0]), int(MAX_G[1]), int(S.max_g), step=50)
+    margen = st.slider("Margen de seguridad", int(MARGEN[0] * 100), int(MARGEN[1] * 100), round(S.margen * 100),
+                       step=5, format="%d %%",
                        help="Sube los mínimos y baja los máximos EFSA este porcentaje, para que la dieta no quede "
                             "justo en el límite. No afecta a la energía ni a los objetivos que hayas movido tú.")
     new = (diet, Profile(sexo, int(edad), float(peso)), float(max_g), margen / 100)
