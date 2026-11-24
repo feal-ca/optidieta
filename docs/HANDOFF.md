@@ -1,8 +1,8 @@
 # Handoff: Optidieta
 
-Estado a 2026-11-23. Repo git local en `~/optidieta`, rama `main`, sin remoto. 129 tests en verde (`uv run pytest`).
+Estado a 2026-11-24. Repo en `~/optidieta`, rama `main`, con remoto privado en GitHub (`feal-ca/optidieta`). 132 tests en verde (`uv run pytest`); ruff y mypy limpios.
 
-**Sin commit.** Todo el trabajo del 2026-11-23 está en el árbol de trabajo: 19 archivos modificados y 7 nuevos (`estimate.py`, `rangos.py`, `sources/etiqueta.py`, `web/`, y sus tests). El último commit es `48291d2 docs: handoff`. El usuario aún no ha dicho si quiere un commit único o separado por temas (interfaz, etiquetas, datos, omega-3).
+El trabajo del 2026-11-23 está en commits separados por tema. El 2026-11-24 se hizo una auditoría: escritura atómica en las cachés (`fsutil.write_atomic`), `load_state` acota los valores a los rangos de los widgets, la tabla del catálogo cambia de clave al filtrar, y ruff y mypy en el grupo dev.
 
 ## Qué es
 
@@ -90,7 +90,6 @@ Todo está en una página, como pidió el usuario.
 
 ## Pendiente
 
-- Decidir el commit (ver arriba).
 - `build` lista 6 emparejamientos a revisar (alcachofas, dos bebidas de almendra, queso fresco 0 %, 26775, 61288) y descarta 10 etiquetas cuyas kcal no cuadran.
 - Las bebidas de almendra, avena y arroz usan los minerales de la bebida de soja de BEDCA.
 - Atún en lata, gamba y bacalao sin dato de EPA+DHA (cuentan como 0). Huevos tampoco.
@@ -105,7 +104,8 @@ Siguientes pasos probables:
 ## Verificación
 
 ```
-uv run pytest                              # 129 passed
+uv run pytest                              # 132 passed
+uv run ruff check . && uv run mypy         # sin errores
 uv run python scripts/probar_dietas.py     # omnívora 1,84 · vegetariana 1,83 · vegana no factible
 uv run python scripts/revisar_mapping.py   # "sin regla: 0"
 uv run optidieta etiquetas                 # solo lee las que falten
