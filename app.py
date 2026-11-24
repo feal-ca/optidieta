@@ -351,7 +351,7 @@ with st.expander("Catálogo y precios"):
         column_config={"id": None, "Mercadona": st.column_config.LinkColumn(display_text="ver"),
                        "Mi precio €/100 g": st.column_config.NumberColumn(min_value=0.01, format="%.3f",
                                                                           help="Vacío = precio de Mercadona")},
-        key="catalogo")
+        key=editor_key("catalogo", cdf.id))  # con otras filas (otro filtro), otra tabla: sin ediciones fantasma
     changed = False
     for r in ced.to_dict("records"):
         rid = r["id"]
