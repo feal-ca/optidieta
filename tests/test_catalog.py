@@ -100,3 +100,50 @@ def test_light_label_kept():
     labels = {"1": {"energia_kcal": 110.0, "proteina_g": 12.0, "hidratos_g": 14.0, "grasa_g": 0.5}}
     cat, _ = build([product(id="1")], [mrow("1")], labels)
     assert cat.fuente_etiqueta[0] == "off"
+
+
+
+def test_mercadona_label_wins_and_brings_micros():
+    merca = {"energia_kcal": 310.0, "proteina_g": 20.0, "hidratos_g": 50.0, "grasa_g": 2.0, "vit_b12_ug": 1.5}
+    off = {"energia_kcal": 290.0, "proteina_g": 15.0, "hidratos_g": 50.0, "grasa_g": 2.0}
+    cat, rep = build_catalog([product(id="1")], BEDCA, pd.DataFrame([mrow("1")]), {"1": off}, {"1": merca})
+    assert cat.fuente_etiqueta[0] == "mercadona"
+    assert cat[col("proteina_g")][0] == 20.0
+    assert cat[col("vit_b12_ug")][0] == 1.5 and cat[known_col("vit_b12_ug")][0]
+    assert cat[col("hierro_mg")][0] == 3.0  # lo que la etiqueta no dice sigue siendo BEDCA
+    assert rep.con_etiqueta_mercadona == 1 and rep.con_etiqueta == 0
+
+
+def test_implausible_mercadona_label_falls_back_to_off():
+    bad = {"energia_kcal": 900.0, "proteina_g": 1.0, "hidratos_g": 1.0, "grasa_g": 1.0}
+    off = {"energia_kcal": 290.0, "proteina_g": 15.0, "hidratos_g": 50.0, "grasa_g": 2.0}
+    cat, rep = build_catalog([product(id="1")], BEDCA, pd.DataFrame([mrow("1")]), {"1": off}, {"1": bad})
+    assert cat.fuente_etiqueta[0] == "off" and rep.etiqueta_descartada == []
+
+
+def test_mercadona_label_far_from_bedca_is_kept_and_reported():
+    lab = {"energia_kcal": 80.0, "proteina_g": 6.0, "hidratos_g": 12.0, "grasa_g": 0.5}  # BEDCA dice 300 kcal
+    cat, rep = build_catalog([product(id="1")], BEDCA, pd.DataFrame([mrow("1")]), {"1": lab}, {"1": lab})
+    assert cat.fuente_etiqueta[0] == "mercadona" and rep.revisar_emparejamiento == ["1"]
+
+
+def test_missing_nutrient_taken_from_same_name_bedca_entry():
+    b = pd.DataFrame([bedca_row(1, proteina_g=20.0, energia_kcal=150.0, hidratos_g=0.0, grasa_g=8.0),
+                      bedca_row(2, epa_dha_mg=900.0)])
+    b.loc[1, "bedca_nombre"] = "B1"  # mismo alimento con otro id
+    cat, _ = build_catalog([product(id="1")], b, pd.DataFrame([mrow("1", veg="no", vegan="no")]), {})
+    assert cat[col("epa_dha_mg")][0] == 900.0 and cat[known_col("epa_dha_mg")][0]
+
+
+def test_canned_sardine_epa_from_raw_but_not_tuna():
+    b = pd.DataFrame([bedca_row(1, proteina_g=24.0, energia_kcal=220.0, hidratos_g=0.0, grasa_g=14.0),
+                      bedca_row(2, epa_dha_mg=930.0), bedca_row(3, proteina_g=25.0, energia_kcal=200.0,
+                                                                hidratos_g=0.0, grasa_g=12.0),
+                      bedca_row(4, epa_dha_mg=749.0)])
+    b["bedca_nombre"] = ["Sardina, enlatada, en aceite, escurrida", "Sardina", "Atún en aceite de oliva isabel",
+                         "Atún, crudo"]
+    m = pd.DataFrame([dict(mrow("1", veg="no", vegan="no"), bedca_id=1), dict(mrow("2", veg="no", vegan="no"), bedca_id=3)])
+    cat, _ = build_catalog([product(id="1"), product(id="2")], b, m, {})
+    s, t = cat.set_index("id").loc["1"], cat.set_index("id").loc["2"]
+    assert s[col("epa_dha_mg")] == 930.0 and "epa_dha_mg" in s["estimados"]
+    assert not t[known_col("epa_dha_mg")]
