@@ -7,6 +7,7 @@ from pathlib import Path
 
 import requests
 
+from optidieta.fsutil import write_atomic
 from optidieta.nutrients import NUTRIENTS
 
 URL = "https://world.openfoodfacts.org/api/v2/product/{}.json"
@@ -22,7 +23,7 @@ def fetch_label(ean: str, cache_dir: Path, session=None, delay: float = 1.0, ret
     f = cache / f"{ean}.json"
     if f.exists():
         return json.loads(f.read_text(encoding="utf-8"))
-    s = session or requests.Session()
+    s = session or requests
     for attempt in range(retries + 1):
         wait = min(60.0, 2 * delay * 2 ** attempt)
         try:
@@ -44,9 +45,7 @@ def fetch_label(ean: str, cache_dir: Path, session=None, delay: float = 1.0, ret
         data = r.json()
     except ValueError:
         data = {"status": 0}
-    tmp = f.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(f)
+    write_atomic(f, json.dumps(data, ensure_ascii=False))
     if delay:
         time.sleep(delay)
     return data

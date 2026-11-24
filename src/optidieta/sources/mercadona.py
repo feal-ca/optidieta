@@ -9,6 +9,7 @@ from pathlib import Path
 
 import requests
 
+from optidieta.fsutil import write_atomic
 from optidieta.textutil import strip_html
 
 BASE = "https://tienda.mercadona.es/api"
@@ -95,9 +96,7 @@ def _get_cached(session, cache: Path, name: str, path: str, delay: float, retrie
     else:
         r.raise_for_status()
         data = r.json()
-    tmp = f.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(f)
+    write_atomic(f, json.dumps(data, ensure_ascii=False))
     if delay:
         time.sleep(delay)
     return data

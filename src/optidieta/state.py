@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
+from optidieta.fsutil import write_atomic
 from optidieta.targets import Constraint, Profile
 
 
@@ -46,9 +47,7 @@ def save_state(s: UserState, path: Path) -> None:
         "diet": s.diet, "excluded": sorted(s.excluded), "price_overrides": s.price_overrides,
         "constraint_edits": s.constraint_edits, "max_g": s.max_g, "margen": s.margen,
     }
-    tmp = path.with_suffix(".tmp")
-    tmp.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
-    tmp.replace(path)
+    write_atomic(path, json.dumps(d, ensure_ascii=False, indent=1))
 
 
 def apply_edits(base: list[Constraint], edits: dict[str, dict]) -> list[Constraint]:

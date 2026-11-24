@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
+from optidieta.fsutil import write_atomic
 from optidieta.nutrients import NUTRIENTS, col, known_col
 from optidieta.textutil import norm
 
@@ -42,8 +43,7 @@ class BedcaFood:
 
 
 def _post(session, body: str, timeout: float = 60) -> str:
-    s = session or requests.Session()
-    r = s.post(URL, data=body.encode("utf-8"), headers=HEADERS, timeout=timeout)
+    r = (session or requests).post(URL, data=body.encode("utf-8"), headers=HEADERS, timeout=timeout)
     r.raise_for_status()
     return r.content.decode("utf-8")
 
@@ -56,7 +56,7 @@ def fetch_food_list(cache_dir: Path, session=None) -> list[tuple[int, str]]:
         text = path.read_text(encoding="utf-8")
     else:
         text = _post(session, _LIST_Q)
-        path.write_text(text, encoding="utf-8")
+        write_atomic(path, text)
     seen: dict[int, str] = {}
     for food in ET.fromstring(text).iter("food"):
         fid = int(food.findtext("f_id"))
@@ -71,9 +71,7 @@ def fetch_food(f_id: int, cache_dir: Path, session=None, delay: float = 0.0) -> 
     if path.exists():
         return path.read_text(encoding="utf-8")
     text = _post(session, _FOOD_Q.format(int(f_id)))
-    tmp = path.with_suffix(".tmp")
-    tmp.write_text(text, encoding="utf-8")
-    tmp.replace(path)
+    write_atomic(path, text)
     if delay:
         time.sleep(delay)
     return text
@@ -110,11 +108,10 @@ def parse_food(xml: str) -> BedcaFood | None:
             continue
         v = _num(fv.findtext("best_location"))
         unit = (fv.findtext("v_unit") or "").strip()
+        # cobre llega como "ug" con valores que son mg (error conocido de BEDCA): se toma tal cual en mg
         if v is not None:
             if nut.key == "energia_kcal" and unit.lower() == "kj":
                 v = v / 4.184
-            # cobre llega como "ug" con valores que son mg (error conocido de BEDCA): se toma tal cual en mg
-        if v is not None:
             v *= nut.bedca_factor
         if nut.bedca_sum and v is not None and valores.get(nut.key) is not None:
             valores[nut.key] += v

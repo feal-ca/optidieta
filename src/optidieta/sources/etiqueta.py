@@ -10,6 +10,7 @@ from pathlib import Path
 
 import requests
 
+from optidieta.fsutil import write_atomic
 from optidieta.nutrients import BY_KEY, NUTRIENTS
 
 PERSPECTIVA_TRASERA = 9
@@ -63,7 +64,8 @@ def claude_cmd(image: Path, model: str = "haiku") -> list[str]:
 
 
 def _run_claude(cmd: list[str]) -> dict:
-    r = subprocess.run(cmd, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=180)
+    r = subprocess.run(cmd, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=180,
+                       check=False)
     if r.returncode != 0:
         raise RuntimeError(f"claude salió con {r.returncode}: {r.stderr.strip()[:300]}")
     return json.loads(r.stdout)
@@ -83,14 +85,12 @@ def read_label(pid: str, detail: dict, cache_dir: Path, run=_run_claude, session
     if not img.exists():
         r = (session or requests).get(url, timeout=60)
         r.raise_for_status()
-        img.write_bytes(r.content)
+        write_atomic(img, r.content)
     res = run(claude_cmd(img.resolve(), model))
     if res.get("is_error") or "structured_output" not in res:
         raise RuntimeError(f"respuesta sin datos para {pid}: {str(res.get('result'))[:200]}")
     data = {"producto": pid, "modelo": model, "coste_usd": res.get("total_cost_usd"), **res["structured_output"]}
-    tmp = out.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(out)
+    write_atomic(out, json.dumps(data, ensure_ascii=False))
     return data
 
 
