@@ -1,7 +1,7 @@
 """Datos del gráfico de rangos: cada nutriente en % de su referencia EFSA, y cómo un arrastre cambia el objetivo."""
 
 import math
-from collections.abc import Mapping
+from collections.abc import Mapping, Set
 
 from optidieta.nutrients import col
 from optidieta.optimizer import Solution
@@ -20,14 +20,21 @@ GRUPOS = {
 _GRUPO = {k: g for g, ks in GRUPOS.items() for k in ks}
 
 
-def _disp(c: Constraint, v: float | None) -> float | None:
+def to_display(c: Constraint, v: float | None) -> float | None:
     """Valor en las unidades que ve el usuario (% E para los de porcentaje de energía)."""
     return None if v is None else (v * 100 if c.kind == "pct_energia" else v)
 
 
+def from_display(c: Constraint, v: float | None) -> float | None:
+    """Inverso de `to_display`."""
+    if v is None:
+        return None
+    return v / 100 if c.kind == "pct_energia" else float(v)
+
+
 def reference(base: Constraint) -> float | None:
     """El 100 % del eje: el mínimo EFSA, o el máximo si no hay mínimo."""
-    r = _disp(base, base.min if base.min is not None else base.max)
+    r = to_display(base, base.min if base.min is not None else base.max)
     return r if r else None
 
 
@@ -47,11 +54,17 @@ def _num(x: float) -> str:
     return f"{x:,.{d}f}".replace(",", " ").replace(".", ",")
 
 
+def _pct(v: float | None, ref: float) -> float | None:
+    return None if v is None else v / ref * 100
+
+
 def range_text(c: Constraint) -> str:
-    lo, hi = _disp(c, c.min), _disp(c, c.max)
+    lo, hi = to_display(c, c.min), to_display(c, c.max)
     if lo is not None and hi is not None:
         return f"{_num(lo)}–{_num(hi)}"
-    return f"≥ {_num(lo)}" if lo is not None else f"≤ {_num(hi)}" if hi is not None else "—"
+    if lo is not None:
+        return f"≥ {_num(lo)}"
+    return f"≤ {_num(hi)}" if hi is not None else "—"
 
 
 def _edited(c: Constraint, b: Constraint) -> bool:
@@ -61,7 +74,7 @@ def _edited(c: Constraint, b: Constraint) -> bool:
 def food_contrib(food: Mapping, grams: float, constraints: list[Constraint], sol: Solution) -> dict[str, float | None]:
     """Lo que aporta un alimento (grams g) a cada nutriente, en unidades de pantalla; None si no hay dato."""
     kcal = sol.totals["energia_kcal"].value if "energia_kcal" in sol.totals else 0
-    out = {}
+    out: dict[str, float | None] = {}
     for c in constraints:
         v = food.get(col(c.key))
         if v is None or (isinstance(v, float) and math.isnan(v)):
@@ -88,7 +101,7 @@ def combine_contrib(parts: list[Mapping[str, float | None]]) -> tuple[dict[str, 
 
 def nutrient_rows(base: list[Constraint], constraints: list[Constraint], sol: Solution,
                   contrib: Mapping[str, float | None] | None = None, defaults: list[Constraint] | None = None,
-                  estimated: set[str] = frozenset(), contrib_partial: set[str] = frozenset()) -> list[dict]:
+                  estimated: Set[str] = frozenset(), contrib_partial: Set[str] = frozenset()) -> list[dict]:
     """Filas del gráfico. `base` (EFSA) da la banda y la escala; `defaults` (EFSA con margen) dice qué objetivos
     ha cambiado el usuario; `estimated` son los nutrientes en los que algún alimento elegido lleva un valor estimado.
     """
@@ -100,29 +113,34 @@ def nutrient_rows(base: list[Constraint], constraints: list[Constraint], sol: So
         ref = reference(b)
         if ref is None:
             continue
-        pct = lambda v: None if v is None else v / ref * 100
         val = diet_value(c, sol)
-        lo, hi = pct(_disp(b, b.min)), pct(_disp(b, b.max))
-        p = pct(val)
+        lo, hi = _pct(to_display(b, b.min), ref), _pct(to_display(b, b.max), ref)
+        p = _pct(val, ref)
         status = None
         if p is not None:
             status = "bajo" if lo is not None and p < lo - 0.5 else "alto" if hi is not None and p > hi + 0.5 else "ok"
         t = sol.totals.get(c.key)
+        cv = contrib.get(c.key) if contrib else None
         rows.append({
             "key": c.key, "label": c.label, "unit": c.unit, "group": _GRUPO.get(c.key, "Otros"), "ref": ref,
             "band_lo": lo or 0.0, "band_hi": hi, "value": p,
             "value_txt": None if val is None else f"{_num(val)} {c.unit}",
             "range_txt": range_text(b), "active": c.active, "status": status,
             "edited": _edited(c, d), "target_shown": _edited(c, b),
-            "target_lo": pct(_disp(c, c.min)), "target_hi": pct(_disp(c, c.max)),
+            "target_lo": _pct(to_display(c, c.min), ref), "target_hi": _pct(to_display(c, c.max), ref),
             "target_txt": range_text(c) if _edited(c, b) else None, "estimated": c.key in estimated,
-            "contrib": pct(contrib.get(c.key)) if contrib else None,
-            "contrib_txt": None if not contrib else "sin dato" if contrib.get(c.key) is None
-            else ("≥ " if c.key in contrib_partial else "") + f"{_num(contrib[c.key])} {c.unit}",
-            "contrib_share": (contrib[c.key] / val if contrib and contrib.get(c.key) is not None and val else None),
+            "contrib": _pct(cv, ref),
+            "contrib_txt": _contrib_txt(cv, c, contrib_partial) if contrib else None,
+            "contrib_share": cv / val if cv is not None and val else None,
             "warn": bool(t is not None and (t.known_fraction < 0.999 or c.key in sol.unverified_max)),
         })
     return rows
+
+
+def _contrib_txt(v: float | None, c: Constraint, partial: Set[str]) -> str:
+    if v is None:
+        return "sin dato"
+    return ("≥ " if c.key in partial else "") + f"{_num(v)} {c.unit}"
 
 
 def drag_edit(base: Constraint, current_pct: float | None, new_pct: float, ref: float | None = None) -> dict:
@@ -133,6 +151,8 @@ def drag_edit(base: Constraint, current_pct: float | None, new_pct: float, ref: 
     (EFSA con margen) y `ref` el 100 % del eje (por defecto, el de `base`).
     """
     ref = ref if ref is not None else reference(base)
+    if ref is None:
+        raise ValueError(f"{base.key} no tiene referencia")
     v = new_pct / 100 * ref
     if base.kind == "pct_energia":
         v /= 100

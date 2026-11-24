@@ -64,7 +64,7 @@ def propose(products: list[MercaProduct], bedca: pd.DataFrame) -> pd.DataFrame:
     # el nombre BEDCA es "Alimento, descriptor, descriptor": pesa más el alimento que los descriptores
     scores = (0.7 * process.cdist(queries, heads, scorer=fuzz.token_set_ratio, workers=-1)
               + 0.3 * process.cdist(queries, names, scorer=fuzz.token_set_ratio, workers=-1))
-    for p, q, sc in zip(products, queries, scores):
+    for p, q, sc in zip(products, queries, scores, strict=True):
         cooked = any(w in q for w in COCINADO)
         adj = sc + 8 * (-raw_bias if cooked else raw_bias)
         j = int(np.argmax(adj))
@@ -72,7 +72,7 @@ def propose(products: list[MercaProduct], bedca: pd.DataFrame) -> pd.DataFrame:
         pc = b.get("porcion_comestible")
         rows.append({
             "mercadona_id": str(p.id), "nombre": p.nombre, "bedca_id": int(b["bedca_id"]),
-            "bedca_nombre": b["bedca_nombre"], "confianza": int(round(float(sc[j]))), "revisado": "no",
+            "bedca_nombre": b["bedca_nombre"], "confianza": round(float(sc[j])), "revisado": "no",
             "excluir": "no", "porcion_comestible": float(pc) if pd.notna(pc) and pc else 1.0,
             "g_por_unidad": default_unit_grams(p), "vegetariano": "", "vegano": "",
         })

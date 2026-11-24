@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from typing import Literal, cast
 
 import altair as alt
 import pandas as pd
@@ -13,9 +14,19 @@ from optidieta.cli import paths
 from optidieta.mapping import read_mapping
 from optidieta.nutrients import BY_KEY, col
 from optidieta.optimizer import compare, solve
-from optidieta.rangos import AXIS_MAX, combine_contrib, drag_edit, food_contrib, nutrient_rows, range_text, reference
+from optidieta.rangos import (
+    AXIS_MAX,
+    combine_contrib,
+    drag_edit,
+    food_contrib,
+    from_display,
+    nutrient_rows,
+    range_text,
+    reference,
+    to_display,
+)
 from optidieta.state import EDAD, MARGEN, MAX_G, PESO_KG, UserState, apply_edits, load_state, save_state
-from optidieta.targets import SIN_PESCADO, Profile, apply_margin, default_constraints, for_diet
+from optidieta.targets import SIN_PESCADO, Diet, Profile, apply_margin, default_constraints, for_diet
 from optidieta.ui import editor_key, reset_editors
 
 st.set_page_config(page_title="Optidieta", page_icon="🥕", layout="wide")
@@ -45,12 +56,12 @@ if not P["catalog"].exists():
 
 @st.cache_data
 def _catalog(path: str, mtime: float) -> pd.DataFrame:
-    return load_catalog(path)
+    return load_catalog(Path(path))
 
 
 @st.cache_data
 def _pending(path: str, mtime: float) -> int:
-    m = read_mapping(path)
+    m = read_mapping(Path(path))
     return int(((m.revisado != "sí") & (m.excluir != "sí")).sum()) if len(m) else 0
 
 
@@ -58,7 +69,8 @@ cat = _catalog(str(P["catalog"]), P["catalog"].stat().st_mtime)
 if "state" not in st.session_state:
     st.session_state.state = load_state(P["data"] / "estado.json")
 S: UserState = st.session_state.state
-names = dict(zip(cat.id.astype(str), cat.nombre))
+names = dict(zip(cat.id.astype(str), cat.nombre, strict=True))
+info = cat.set_index(cat.id.astype(str))
 
 
 def save_and_rerun():
@@ -86,7 +98,7 @@ with st.sidebar:
                     horizontal=True, label_visibility="collapsed")
 
     st.header("Perfil")
-    sexo = st.radio("Sexo", ["h", "m"], format_func={"h": "Hombre", "m": "Mujer"}.get,
+    sexo: Literal["h", "m"] = st.radio("Sexo", ["h", "m"], format_func={"h": "Hombre", "m": "Mujer"}.get,
                     index=["h", "m"].index(S.profile.sexo), horizontal=True)
     c1, c2 = st.columns(2)
     edad = c1.number_input("Edad", *EDAD, S.profile.edad)
@@ -98,7 +110,7 @@ with st.sidebar:
                        step=5, format="%d %%",
                        help="Sube los mínimos y baja los máximos EFSA este porcentaje, para que la dieta no quede "
                             "justo en el límite. No afecta a la energía ni a los objetivos que hayas movido tú.")
-    new = (diet, Profile(sexo, int(edad), float(peso)), float(max_g), margen / 100)
+    new = (cast(Diet, diet), Profile(sexo, int(edad), float(peso)), float(max_g), margen / 100)
     if new != (S.diet, S.profile, S.max_g, S.margen):
         S.diet, S.profile, S.max_g, S.margen = new
         save_and_rerun()
@@ -120,7 +132,7 @@ with st.sidebar:
             set_edit(c.key, e)
             save_and_rerun()
 
-    vet = st.multiselect("Productos que no quiero", options=sorted(names, key=names.get), default=sorted(S.excluded),
+    vet = st.multiselect("Productos que no quiero", options=sorted(names, key=lambda i: names[i]), default=sorted(S.excluded),
                          format_func=lambda i: names.get(i, i), placeholder="Busca un producto…",
                          key=editor_key("vetos", sorted(S.excluded)))
     if set(vet) != S.excluded:
@@ -182,7 +194,6 @@ else:
             ("Entra: " + ", ".join(names.get(i, i) for i in d.added)) if d.added else "",
             ("Sale: " + ", ".join(names.get(i, i) for i in d.removed)) if d.removed else ""])))
 
-    info = cat.set_index(cat.id.astype(str))
     por = pd.DataFrame([{
         "id": p.id, "Producto": p.nombre, "g/día": round(p.grams), "€/día": round(p.cost, 2),
         "Fuente": FUENTES.get(info.fuente_etiqueta[p.id], "BEDCA"), "Mercadona": info.url[p.id],
@@ -220,7 +231,7 @@ else:
             else:
                 cv = next(c for c in constraints if c.key == ver)
                 vals = [food_contrib(info.loc[i], grams[i], [cv], sol)[ver] for i in por.id]
-                tot = sum(v for v in vals if v is not None) or 0
+                tot = sum(v for v in vals if v is not None)
                 bars = por.assign(
                     v=[v or 0.0 for v in vals],
                     etiqueta=["sin dato" if v is None else f"{num(v, 2 if v < 10 else 0)} {cv.unit}"
@@ -245,18 +256,18 @@ st.caption("La banda verde es el rango sano EFSA para tu perfil; el punto negro,
            "izquierda un máximo. La raya negra bajo la banda es tu objetivo; doble clic en el nombre (en negrita) lo "
            "devuelve a EFSA. Un clic en el nombre muestra arriba qué alimentos lo aportan. ⚠ = falta el dato en parte de los alimentos (cuenta como 0). ≈ = parte del dato es una "
            "estimación por subcategoría (azúcares, grasa saturada o grasa de fruta y verdura).")
-contrib, contrib_partial = None, set()
+contrib: dict[str, float | None] | None = None
+contrib_partial: set[str] = set()
 if selected:
     contrib, contrib_partial = combine_contrib([food_contrib(info.loc[i], g, constraints, sol) for i, _, g in selected])
     quien = (f"**{selected[0][1]}** ({selected[0][2]:.0f} g/día)" if len(selected) == 1
              else f"los **{len(selected)} alimentos elegidos** ({sum(g for _, _, g in selected):.0f} g/día)")
     st.markdown(f"Aporte de {quien}: la barra azul de cada fila. Quita la selección de la lista para volver a ver "
                 "los objetivos.")
-est_keys = set()
-if sol.feasible and "estimados" in cat:
-    est_col = cat.set_index(cat.id.astype(str))["estimados"]
+est_keys: set[str] = set()
+if sol.feasible and "estimados" in info:
     for p in sol.portions:
-        est_keys |= set(filter(None, str(est_col.get(p.id, "")).split(",")))
+        est_keys |= set(filter(None, str(info["estimados"].get(p.id, "")).split(",")))
 rows = nutrient_rows(base, constraints, sol, contrib=contrib, defaults=defaults, estimated=est_keys,
                      contrib_partial=contrib_partial)
 nombre_sel = (selected[0][1] if len(selected) == 1 else f"{len(selected)} alimentos") if selected else None
@@ -292,27 +303,24 @@ with st.expander("Tabla de nutrientes"):
 
 with st.expander("Editar objetivos"):
     st.caption("Valores de referencia EFSA para tu perfil. Los % E son porcentaje de la energía total.")
-    pct = lambda c, v: None if v is None else (v * 100 if c.kind == "pct_energia" else v)
     odf = pd.DataFrame([{"key": c.key, "Activo": c.active, "Nutriente": c.label, "Unidad": c.unit,
-                         "Mínimo": pct(c, c.min), "Máximo": pct(c, c.max), "Fuente": c.fuente} for c in constraints])
+                         "Mínimo": to_display(c, c.min), "Máximo": to_display(c, c.max), "Fuente": c.fuente} for c in constraints])
     okey = editor_key("objetivos", [json.dumps(S.constraint_edits, sort_keys=True)])
     oed = st.data_editor(odf, hide_index=True, use_container_width=True, disabled=["Nutriente", "Unidad", "Fuente"],
                          column_config={"key": None}, key=okey)
     if st.session_state.get(okey, {}).get("edited_rows"):
-        edits = {}
+        edits: dict[str, dict] = {}
         for r in oed.itertuples():
-            b = defaults_by[r.key]
-            unpct = lambda v: None if v is None or pd.isna(v) else (v / 100 if b.kind == "pct_energia" else float(v))
-            e = {}
+            b = defaults_by[str(r.key)]
+            ed: dict[str, float | bool | None] = {}
             if bool(r.Activo) != b.active:
-                e["active"] = bool(r.Activo)
-            mn, mx = unpct(r.Mínimo), unpct(r.Máximo)
-            if (mn is None) != (b.min is None) or (mn is not None and abs(mn - b.min) > 1e-9):
-                e["min"] = mn
-            if (mx is None) != (b.max is None) or (mx is not None and abs(mx - b.max) > 1e-9):
-                e["max"] = mx
-            if e:
-                edits[r.key] = e
+                ed["active"] = bool(r.Activo)
+            for campo, nuevo, actual in (("min", r.Mínimo, b.min), ("max", r.Máximo, b.max)):
+                v = from_display(b, None if pd.isna(nuevo) else float(nuevo))
+                if (v is None) != (actual is None) or (v is not None and actual is not None and abs(v - actual) > 1e-9):
+                    ed[campo] = v
+            if ed:
+                edits[str(r.key)] = ed
         if edits != S.constraint_edits:
             S.constraint_edits = edits
             save_and_rerun()
@@ -320,7 +328,7 @@ with st.expander("Editar objetivos"):
 with st.expander("Catálogo y precios"):
     c1, c2, c3 = st.columns([3, 2, 1])
     q = c1.text_input("Buscar", placeholder="lentejas, leche, atún…")
-    cats = ["Todas"] + sorted(cat.categoria.unique())
+    cats = ["Todas", *sorted(cat.categoria.unique())]
     fc = c2.selectbox("Categoría", cats)
     only = c3.radio("Mostrar", ["Todos", "En la dieta", "Vetados"], horizontal=False)
     view = cat
@@ -352,19 +360,17 @@ with st.expander("Catálogo y precios"):
                        "Mi precio €/100 g": st.column_config.NumberColumn(min_value=0.01, format="%.3f",
                                                                           help="Vacío = precio de Mercadona")},
         key=editor_key("catalogo", cdf.id))  # con otras filas (otro filtro), otra tabla: sin ediciones fantasma
-    changed = False
+    before = (set(S.excluded), dict(S.price_overrides))
     for r in ced.to_dict("records"):
         rid = r["id"]
-        if r["Vetado"] and rid not in S.excluded:
-            S.excluded.add(rid); changed = True
-        elif not r["Vetado"] and rid in S.excluded:
-            S.excluded.discard(rid); changed = True
+        if r["Vetado"]:
+            S.excluded.add(rid)
+        else:
+            S.excluded.discard(rid)
         v = r["Mi precio €/100 g"]
-        cur = S.price_overrides.get(rid)
         if v is None or pd.isna(v):
-            if cur is not None:
-                del S.price_overrides[rid]; changed = True
-        elif v >= 0.01 and cur != float(v):
-            S.price_overrides[rid] = float(v); changed = True
-    if changed:
+            S.price_overrides.pop(rid, None)
+        elif v >= 0.01:
+            S.price_overrides[rid] = float(v)
+    if (S.excluded, S.price_overrides) != before:
         save_and_rerun()

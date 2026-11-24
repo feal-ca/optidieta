@@ -8,6 +8,7 @@ Uso: uv run python scripts/revisar_mapping.py [--check]
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
@@ -54,7 +55,8 @@ EXCLUIR = (
     r"manteca de cerdo|margarina (flora|tulipan)|crema de soja|\bnata\b"
 )
 
-R = [
+Regla = tuple[tuple[int, ...] | None, str, str | None, dict[str, Any]]
+R: list[Regla] = [
     # ---- Fruta (27, 145) ----
     ((27, 145), r"aguacate", "Aguacate", {"porcion_comestible": 0.70}),
     ((27, 145), r"arandano", "Arandano", {}),
@@ -286,7 +288,7 @@ def bedca_index(bedca: pd.DataFrame) -> dict[str, int]:
     """Nombre normalizado → id con más nutrientes conocidos (BEDCA repite alimentos por fuente)."""
     known = bedca[[known_col(n.key) for n in NUTRIENTS]].sum(axis=1)
     best: dict[str, tuple[int, int]] = {}
-    for name, bid, k in zip(bedca.bedca_nombre, bedca.bedca_id, known):
+    for name, bid, k in zip(bedca.bedca_nombre, bedca.bedca_id, known, strict=True):
         key = norm(name)
         if key not in best or k > best[key][1]:
             best[key] = (int(bid), int(k))
@@ -298,12 +300,12 @@ def main(check: bool) -> None:
     prods = {str(x.id): x for x in load_products(p)}
     bedca = pd.read_parquet(p["bedca_frame"])
     idx = bedca_index(bedca)
-    names_by_id = dict(zip(bedca.bedca_id.astype(int), bedca.bedca_nombre))
+    names_by_id = dict(zip(bedca.bedca_id.astype(int), bedca.bedca_nombre, strict=True))
     missing = sorted({b for _, _, b, _ in R if b and norm(b) not in idx})
     if missing:
         import difflib
-        for b in missing:
-            print(f"NO EXISTE en BEDCA: {b!r} → {difflib.get_close_matches(norm(b), idx, 4, 0.5)}")
+        for falta in missing:
+            print(f"NO EXISTE en BEDCA: {falta!r} → {difflib.get_close_matches(norm(falta), idx, 4, 0.5)}")
         if check:
             return
     m = read_mapping(p["mapping"])
