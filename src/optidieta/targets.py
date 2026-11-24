@@ -73,6 +73,25 @@ def default_constraints(p: Profile, path: Path = DEFAULT_PATH) -> list[Constrain
     return out
 
 
+def apply_margin(cs: list[Constraint], margin: float) -> list[Constraint]:
+    """Sube los mínimos y baja los máximos un `margin` (0,1 = 10 %), salvo la energía, que ya es una banda.
+
+    Si el margen cruzara mínimo y máximo, el objetivo se deja como está.
+    """
+    from dataclasses import replace
+    if margin <= 0:
+        return list(cs)
+    out = []
+    for c in cs:
+        mn = c.min * (1 + margin) if c.min is not None else None
+        mx = c.max * (1 - margin) if c.max is not None else None
+        if c.key == "energia_kcal" or (mn is not None and mx is not None and mn > mx):
+            out.append(c)
+        else:
+            out.append(replace(c, min=mn, max=mx))
+    return out
+
+
 SIN_PESCADO = {"epa_dha_mg"}  # objetivos que solo se pueden cumplir con pescado (o suplemento)
 
 

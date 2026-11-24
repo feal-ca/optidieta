@@ -15,6 +15,7 @@ class UserState:
     price_overrides: dict[str, float] = field(default_factory=dict)
     constraint_edits: dict[str, dict] = field(default_factory=dict)
     max_g: float = 500.0
+    margen: float = 0.0
 
     @staticmethod
     def default() -> "UserState":
@@ -31,6 +32,7 @@ def load_state(path: Path) -> UserState:
             price_overrides={str(k): float(v) for k, v in d.get("price_overrides", {}).items()},
             constraint_edits=dict(d.get("constraint_edits", {})),
             max_g=float(d.get("max_g", 500.0)),
+            margen=min(max(float(d.get("margen", 0.0)), 0.0), 0.5),
         )
     except (OSError, ValueError, KeyError, TypeError):
         return UserState.default()
@@ -42,7 +44,7 @@ def save_state(s: UserState, path: Path) -> None:
     d = {
         "profile": {"sexo": s.profile.sexo, "edad": s.profile.edad, "peso_kg": s.profile.peso_kg},
         "diet": s.diet, "excluded": sorted(s.excluded), "price_overrides": s.price_overrides,
-        "constraint_edits": s.constraint_edits, "max_g": s.max_g,
+        "constraint_edits": s.constraint_edits, "max_g": s.max_g, "margen": s.margen,
     }
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -57,6 +57,17 @@ def test_every_constraint_has_source():
     assert all(c.fuente for c in default_constraints(Profile("m", 40)))
 
 
+def test_apply_margin():
+    from optidieta.targets import Constraint, apply_margin
+    cs = [Constraint("energia_kcal", "E", "kcal", 2000.0, 2200.0), Constraint("proteina_g", "P", "g", 60.0, None),
+          Constraint("sodio_mg", "Na", "mg", None, 2000.0), Constraint("zinc_mg", "Zn", "mg", 11.0, 12.0)]
+    e, p, na, zn = apply_margin(cs, 0.1)
+    assert (e.min, e.max) == (2000.0, 2200.0)
+    assert p.min == pytest.approx(66.0) and na.max == pytest.approx(1800.0)
+    assert (zn.min, zn.max) == (11.0, 12.0)  # 12,1 > 10,8: no se aplica
+    assert apply_margin(cs, 0) == cs
+
+
 def test_for_diet_turns_off_fish_only_targets():
     from optidieta.targets import Profile, default_constraints, for_diet
     cs = default_constraints(Profile("h", 30, 70.0))
